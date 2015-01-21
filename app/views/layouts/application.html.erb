@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/lumen/bootstrap.min.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #F7F7F7;">
+    <div class="navbar navbar-inverse">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-inverse-collapse">
+        <span class="fa fa-navicon fa-2x"></span>
+      </button>
+      <%= link_to "Rails Blog", root_path, class: "navbar-brand" %>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-inverse-collapse">
+      <ul class="nav navbar-nav">
+        <li><%= link_to 'Home', root_path%></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <% if user_signed_in? != true %>
+          <li>
+            <%= link_to new_user_session_path do %>
+              <i class="fa fa-sign-in"></i> Login
+            <% end %>   
+          </li>
+          <li>
+            <%= link_to new_user_registration_path do %>
+                  <i class="fa fa-check"></i> Sign Up
+              <% end %>
+          </li>
+      <% else %>
+          <li>
+            <%= link_to current_user do %>
+              <% if current_user.avatar_file_name != nil %>
+                  <%= image_tag current_user.avatar.url(:thumb), class: " img-rounded" %>
+                <% elsif current_user.image != nil %>
+                  <%= image_tag current_user.image, size: "32", class: " img-rounded" %>
+                <% else %>
+                  <img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" alt="No Avatar Exists" class="img img-rounded" width="32" height="32">
+                <% end %>
+              <% end %>
+          </li>
+        <% end %>
+          <% if user_signed_in? %>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle btn btn-lg" type="button" id="dropdownMenu2" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog fa-2x"></span></a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+                <li role="presentation" class="dropdown-header">Profile</li>
+                <li role="presentation"><%= link_to "Edit", edit_user_registration_path %></li>
+                <li role="presentation"><%= link_to "Sign Out", destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+              </ul>
+            </li>
+          <% end %>
+      </ul>
+    </div>
+  </div>
+    <% if flash.alert || flash.notice %>
+    
+    <div class="container">
+        <div class="row">
+            <div id="flash">
+              <% if flash.alert %>
+                  <h6 class="alert alert-danger alert-dismissible" role="alert">
+                      <%= flash.alert %>
+                  </h6>
+              <% end %>
+            </div>
+            <div id="notice">
+              <% if flash.notice %>
+                      <h6 class="alert alert-success alert-dismissible" role="alert">
+                          <%= flash.notice %>
+                      </h6>
+              <% end %>
+            </div>
+        </div>
+    </div>
+    <% end %>
+</div>
+    <div class="container">
+	<div class="col-xs-12 col-sm-12 col md-12 col-lg-12">
+
+	  <%= yield %>
+	</div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $('[data-toggle=dropdown]').dropdown()
+      $(document).ready(function(){
+        setTimeout(function(){
+          $('#flash').remove();
+        }, 6000);
+       })
+
+      $(document).ready(function(){
+        setTimeout(function(){
+          $('#notice').remove();
+        }, 6000);
+       })
+    </script>
+    <script type="text/javascript">
+      (function (jQuery) {
+    jQuery.mark = {
+      jump: function (options) {
+        var defaults = {
+          selector: 'a.smooth-scroll'
+        };
+        if (typeof options == 'string') defaults.selector = options;
+        var options = jQuery.extend(defaults, options);
+        return jQuery(options.selector).click(function (e) {
+          var jumpobj = jQuery(this);
+          var target = jumpobj.attr('href');
+          var thespeed = 1000;
+          var offset = jQuery(target).offset().top;
+          jQuery('html,body').animate({
+            scrollTop: offset
+          }, thespeed, 'swing')
+          e.preventDefault();
+        })
+      }
+    }
+  })(jQuery);
+
+
+  jQuery(function(){  
+    jQuery.mark.jump();
+  });
+    </script>
+</body>
+</html>

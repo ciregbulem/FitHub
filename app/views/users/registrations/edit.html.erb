@@ -1,0 +1,143 @@
+<html>
+  <head>
+    <title>Edit Profile</title>
+  </head>
+  <body data-spy="scroll" data-target=".navbar-example" style="position: relative;">
+    <ol class="breadcrumb">
+      <li><a href="<%= root_path %>">Home</a></li>
+      <li><%= link_to "Users", users_path %></a></li>
+      <li><%= link_to current_user.fname, current_user %></li>
+      <li class="active">Edit Profile></li>
+    </ol>
+    <div class="well well-lg">     
+      <div class="row">  
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">          
+          <% if @user.avatar.url != nil %>
+            <!-- Button trigger modal -->
+            <a type="button" data-toggle="modal" data-target="#myModal" class="btn">
+              <%= image_tag @user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-rounded" %>
+            </a>
+             
+          <% elsif @user.image != nil %>
+            <%= image_tag @user.image, size: "300", class: "img img-rounded img-thumbnail" %>
+          <% else %>
+            <img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" alt="No Avatar Exists" class="img img-rounded" width="300" height="300">
+          <% end %>
+        </div>
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-8">
+          <h1><%= @user.fname %> <%= @user.lname %><br><small>(<%= @user.email %>)</small></h1><br>
+        </div>  
+      </div>
+    </div>
+
+    <!-- Modal for User Image -->
+    <div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel"><%= @user.fname %> <%= @user.lname %></h4>
+          </div>
+          <div class="modal-body">
+            <center><%= image_tag @user.avatar.url, class: "img img-responsive" %></center>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Modal End -->
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4><i class="fa fa-edit"> Edit Profile</i></h4></div>
+        <div class="panel-body">
+          <div class="hidden-xs hidden-sm col-md-3 col-lg-3">
+            <div class="panel panel-default">
+              <div class="panel-heading"><h5>Options</h5></div>
+              <div class="panel-body navbar-example">
+                <ul class="nav nav-pills nav-stacked page-scroll" role="pilllist">
+                  <li><a href="#info" class="nav-link page-scroll smooth-scroll">Basic Info</a></li>
+                  <li><a href="#email-password" class="nav-link page-scroll smooth-scroll">Email & Password</a></li>
+                  <li><a href="#deactivate" class="nav-link page-scroll smooth-scroll">Deactivate</a></li>
+                </ul>
+        </div>
+      </div>
+    </div>
+          <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+            
+            <!--Basic Info panel-->
+            <div class="row">
+              <div class="panel panel-default" id="info">
+                <div class="panel-heading"><h3 class="panel-title">Basic Info</h3></div>
+                  <div class="panel-body">
+                    <%= bootstrap_form_for @user do |f| %>
+
+                        <%= f.text_field :fname, autofocus: true, label: "First Name" %>
+
+                      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+                      <% end %>
+
+                        <%= f.text_field :lname, autocomplete: "off", label: "Last Name" %>
+
+                        <%= f.text_area :about, label: "About" %>
+
+                        <%= f.file_field :avatar, label: "Upload an Avatar" %>
+                      
+                      <div class="actions">
+                        <%= f.submit "Save", class: "btn btn-success" %>
+                      </div>
+                    <% end %>
+                  </div>
+              </div>
+            </div>
+
+            <!-- Email & Password panel-->
+            <div class="row">
+              <div class="panel panel-default" id="email-password">
+                <div class="panel-heading"><h3 class="panel-title">Email & Password</h3></div>
+                  <div class="panel-body">
+                    <%= bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+                      <%= devise_error_messages! %>
+
+                        <%= f.email_field :email, autofocus: true %>
+
+                      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+                      <% end %>
+
+                      <div class="field">
+                        <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+                        <%= f.password_field :password, autocomplete: "off", hide_label: true %>
+                      </div>
+
+                        <%= f.password_field :password_confirmation, autocomplete: "off", label: "Password Confirmation" %>
+
+                      <div class="field">
+                        <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+                        <%= f.password_field :current_password, autocomplete: "off", hide_label: true %>
+                      </div>
+
+                      <div class="actions">
+                        <%= f.submit "Save", class: "btn btn-success" %>
+                      </div>
+                    <% end %>
+                  </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="panel panel-default" id="deactivate">
+              <div class="panel-heading"><h3 class="panel-title">Deactivate Account</h3></div>
+                <div class="panel-body">
+                  <p>
+                  <%= link_to "Deactivate Account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, :class => "btn btn-danger" %></p>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

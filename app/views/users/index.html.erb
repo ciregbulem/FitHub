@@ -1,0 +1,28 @@
+<table class="table table-responsive"> 
+							<% @users.each do |user| %>
+								<div>
+									<div >
+										<tr>
+											
+												<td>
+													<div class="row">
+													<div class="col-xs-4 col-sm-4 col-md-2 col-lg-2"><img src="https://cdn2.iconfinder.com/data/icons/picons-essentials/71/gallery-512.png" class="img-responsive img-thumbnail"></div>
+													<div class="col-xs-8 col-sm-8 col-md-10 col-lg-10"><h1><a href="<%= user_path(user) %>"><%= user.fname %></a></h1>
+													<p><%= truncate(user.about, length: 600, omission: " [...]") %></p>
+													<div class="btn-group">
+														<a type="button" href="<%= user_path(user) %>" class="btn btn-primary">Read</a> 
+														<% if user_signed_in? %>
+															<a type="button" href="<%= edit_user_registration_path(user) %>" class="btn btn-default">Edit</a> 
+															<%= link_to 'Delete', user_path(user), :class => "btn btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+														<% end %>
+													</div>
+													</div>
+													</div>
+												</td>
+										</tr>
+									</div>
+								</div>
+							<% end %>
+						</table>
+					</div>
+			<%= will_paginate @users, renderer: BootstrapPagination::Rails %>

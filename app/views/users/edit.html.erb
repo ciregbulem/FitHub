@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<title>Edit Profile</title>
+	</head>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 centered">
+				<div class="panel panel-default">
+					<div class="panel-heading">Edit Profile</div>
+						<div class="panel-body">
+							<div class="col-md-3 col-lg-3">
+								<ul class="nav">
+									<li>About</li>
+									<li>Work</li>
+									<li>Education</li>
+								</ul>
+							</div>
+							<div class="col-md-7 col-lg-7">
+								<%= bootstrap_form_for @user do |f| %>
+								        
+								        <%= f.text_field :fname, autofocus: true, placeholder: "First Name", label: "First Name" %>
+								        <%= f.text_field :lname, placeholder: "Last Name", label: "Last Name" %>
+								        
+								        <%= f.email_field :email, placeholder: "Enter Email" %>
+
+								      <div class="field">
+								        <% if @validatable %>
+								        <% end %>
+								        <%= f.password_field :password, autocomplete: "off", placeholder: "Enter New Password", help: "(8 characters minimum)" %>
+								      </div>
+
+								      <div class="field">
+								        <%= f.password_field :password_confirmation, label: "Password Confirmation", autocomplete: "off", placeholder: "Confirm Password" %>
+								      </div>
+
+								      <div class="actions">
+								        <%= f.submit "Sign Up", class: "btn btn-success" %>
+								      </div>
+								    <% end %>
+							</div>
+						</div>
+				</div>
+				
+			</div>
+			
+		</div>
+	</div>
+</html>
