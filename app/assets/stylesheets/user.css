@@ -1,0 +1,73 @@
+
+table td{
+	padding: 5px;
+}
+.text-center {
+  padding-top: 20px;
+}
+
+#sidebar {
+  height: 100%;
+  padding-right: 0;
+  padding-left: 0;
+  padding-top: 0px;
+  background-color: #36E08B;
+  display: block;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+#sidebar .nav {
+  width: 100%;
+  border:0 #f2f2f2 solid;
+  border-top-width: 3px;
+  -webkit-box-shadow: inset 10px 10px 124px -50px rgba(0,0,0,0.75);
+  -moz-box-shadow: inset 10px 10px 124px -50px rgba(0,0,0,0.75);
+  box-shadow: inset 10px 10px 124px -50px rgba(0,0,0,0.75);
+}
+#sidebar li {
+  border:0 #FFFFFF solid;
+  border-bottom-width: 1px;
+}
+
+#sidebar li a{
+  padding: 20px;
+  color: white;
+}
+
+#sidebar img {
+  -webkit-box-shadow: inset 10px 10px 124px -18px rgba(0,0,0,0.75);
+-moz-box-shadow: inset 10px 10px 124px -18px rgba(0,0,0,0.75);
+box-shadow: inset 10px 10px 124px -18px rgba(0,0,0,0.75);
+}
+
+/* collapsed sidebar styles */
+@media screen and (max-width: 767px) {
+  .row-offcanvas {
+    position: relative;
+    -webkit-transition: all 0.25s ease-out;
+    -moz-transition: all 0.25s ease-out;
+    transition: all 0.25s ease-out;
+  }
+  .row-offcanvas-right
+  .sidebar-offcanvas {
+    right: -41.6%;
+  }
+
+  .row-offcanvas-left
+  .sidebar-offcanvas {
+    left: -41.6%;
+  }
+  .row-offcanvas-right.active {
+    right: 41.6%;
+  }
+  .row-offcanvas-left.active {
+    left: 41.6%;
+  }
+  .sidebar-offcanvas {
+    position: absolute;
+    top: 0;
+    width: 41.6%;
+  }
+  #sidebar {
+    padding-top:0;
+  }
+}

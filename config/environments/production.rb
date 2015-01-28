@@ -87,7 +87,7 @@ Rails.application.configure do
     :storage => :s3,
     #:s3_host_name => 'REMOVE_THIS_LINE_IF_UNNECESSARY',
     :s3_credentials => {
-      :bucket => "chudiblog",
+      :bucket => "fithub-production",
       :access_key_id => ENV['AWS_access_key_id'],
       :secret_access_key => ENV['AWS_secret_access_key']
     } 

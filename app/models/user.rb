@@ -1,17 +1,11 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  
+
   TEMP_EMAIL_PREFIX = 'change@me'
   TEMP_EMAIL_REGEX = /\Achange@me/
 
   # For Devise
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook]
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook, :fitbit]
 
   validates_format_of :email, :without => TEMP_EMAIL_REGEX, on: :update
   validates :fname, presence: true
@@ -19,11 +13,11 @@ class User < ActiveRecord::Base
   store_accessor :info, :location, :bio, :about, :gender, :birthday, :name, :link
 
   # For Paperclip
-  has_attached_file :avatar, :styles => { :medium => "200x200#", :thumb => "32x32#" }, :default_url => "/images/:style/missing.png", :url => ":s3_domain_url", :path => "/:class/:attachment/:id_partition/:style/:filename"
+  has_attached_file :avatar, :styles => { :medium => "356x356#", :thumb => "32x32#" }, :default_url => "/images/:style/missing.png", :url => ":s3_domain_url", :path => "/:class/:attachment/:id_partition/:style/:filename"
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
 
   # For Papercrop
-  crop_attached_file :avatar, :aspect => "16:9"
+  crop_attached_file :avatar
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
 

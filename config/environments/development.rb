@@ -34,6 +34,10 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # For Local Assets
+  config.assets.compress = false
+  
     
   # For Devise:
     config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
@@ -46,7 +50,7 @@ Rails.application.configure do
     :storage => :s3,
     #:s3_host_name => 'REMOVE_THIS_LINE_IF_UNNECESSARY',
     :s3_credentials => {
-      :bucket => "chudiblog-development",
+      :bucket => "fithub-development",
       :access_key_id => ENV['AWS_access_key_id'],
       :secret_access_key => ENV['AWS_secret_access_key']
     }

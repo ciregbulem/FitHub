@@ -11,10 +11,13 @@ gem 'rails_12factor'
 gem 'devise'
 gem 'omniauth', '~> 1.2.2'
 gem 'omniauth-facebook'
+gem 'omniauth-fitbit'
+gem 'fitgem'
 gem "paperclip", "~> 4.2"
 gem "papercrop"
 gem 'aws-sdk'
 gem 'figaro'
+gem 'mmenu-rails'
 ruby '2.0.0'
 
 # Use PostgreSQL as the database for Active Record

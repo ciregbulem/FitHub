@@ -2,90 +2,212 @@
 <html>
 <head>
   <title><%= @user.fname %> <%= @user.lname %></title>
+  <link rel="stylesheet" type="text/css" href="jquery.mmenu.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.js"></script>
+  <link rel="stylesheet" type="text/css" href="/app/assets/stylesheets/sidebar.css">
+  <link rel="stylesheet" type="text/css" href="/app/assets/hook/hook.css">
 </head>
-  <body>
-  	<ol class="breadcrumb">
-  	  <li><a href="<%= root_path %>">Home</a></li>
-  	  <li><a href="<%= users_path %>">Users</a></li>
-  	  <li class="active"><%= @user.fname %></li>
-  	</ol>
-    <div class="well well-lg">     
-      <div class="row">  
-        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">          
-          <% if @user.avatar_file_name != nil %>
-            <!-- Button trigger modal -->
+  <body style="background-color: #F7F7F7;">
+  <div class="container-fluid">
+  <div class="row" id="header">
+    <!-- content -->
+    <div class="container">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row">
+          <div class="col-xs-offset-4 col-xs-4 col-sm-offset-4 col-sm-4 col-md-offset-4 col-md-4 col-lg-offset-4 col-lg-4 text-center">
+            
+            <!-- Profile Picture -->
             <a type="button" data-toggle="modal" data-target="#myModal" class="btn">
-              <%= image_tag @user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-rounded" %>
+              <% if @user.avatar_file_name != nil %>
+                <%= image_tag @user.avatar.url(:medium), size: "275", class: "img img-thumbnail img-circle profile-pic" %>
+              <% elsif @user.image != nil %>
+                <%= image_tag @user.image, size: "275", class: "img img-thumbnail img-circle profile-pic" %>
+              <% else %>
+                <img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" alt="No Avatar Exists" class="img img-circle profile-pic" width="275" height="275">
+              <% end %>
             </a>
-             
-          <% elsif @user.image != nil %>
-            <%= image_tag @user.image, size: "300", class: "img img-rounded img-thumbnail" %>
-          <% else %>
-            <img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" alt="No Avatar Exists" class="img img-rounded img-thumbnail" width="300" height="300">
-          <% end %>
-        </div>
-        <div class="col-xs-12 col-sm-9 col-md-8 col-lg-8">
-          <h1><%= @user.fname %> <%= @user.lname %><br><small>(<%= @user.email %>)</small></h1>
-          <% if current_user.id == @user.id %>
-            <%= link_to "Edit Profile", edit_user_registration_path, :class => "btn btn-default btn-sm" %>
-          <% end %>
-          <br>
-        </div>  
+            <br>
+            <!-- Profile Picture END -->
+
+            <!-- Social Buttons -->
+            <% if @user.fb_link != nil %>
+              <%= link_to @user.fb_link, class: "btn" do %>
+                <i class="fa fa-facebook-official fa-3x" style="color: #3b5998;"></i>
+              <% end %>
+            <% else %>
+            <% end %>
+
+            <% if @user.tw_link != nil %>
+              <%= link_to @user.tw_link, class: "btn" do %>
+                <i class="fa fa-twitter-square fa-3x" style="color: #4793b9;"></i>
+              <% end %>
+
+            <% else %>
+            <% end %> 
+
+            <% if @user.ig_link != nil %>
+              <%= link_to @user.ig_link, class: "btn btn-lg" do %>
+                <i class="fa fa-instagram fa-3x" style="color: #004f7e;"></i>
+              <% end %>
+            <% else %>
+            <% end %>
+          </div>
+          <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <blockquote>
+              <p class="lead">
+                <%= @user.about %>
+              </p>
+            </blockquote>
+          </div>
+        </div><!-- .row -->
+        <br> 
       </div>
     </div>
+    </div>
+         <br>
+         <div class="container">
+           <!-- 2nd Navbar --> 
+           <div class="btn-group btn-group-justified">
+            <a class="btn btn-default btn-lg btn-block active">Today</a>
+            <a class="btn btn-default btn-lg btn-block">Week</a>
+            <a class="btn btn-default btn-lg btn-block">Month</a>
+            <a class="btn btn-default btn-lg btn-block">Progress</a> 
+          </div> 
 
-    <!-- Modal -->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+               <div class="panel">
+                 <div class="panel-heading"></div>
+                  <div class="panel-body">
+                    <center><i class="glyphicon glyphicon-fire fa-5x"></i></center>
+                    <h3 class="text-center">Calories</h3>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                        <span class="sr-only">60% Complete (success)</span>
+                      </div>
+                    </div>
+                 </div>
+               </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">               
+               <div class="panel">
+                 <div class="panel-heading"></div>
+                 <div class="panel-body">
+                  <center><i class="fa fa-heartbeat fa-5x"></i></center>
+                  <h3 class="text-center">Steps</h3>
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%">
+                      <span class="sr-only">30% Complete (success)</span>
+                    </div>
+                  </div>
+                 </div>
+               </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+               <div class="panel">
+                 <div class="panel-heading"></div>
+                  <div class="panel-body">
+                    <center><i class="fa fa-bicycle fa-5x"></i></center>
+                    <h3 class="text-center">Miles</h3>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                        <span class="sr-only">90% Complete (success)</span>
+                      </div>
+                    </div>
+                 </div>
+               </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+               <div class="panel">
+                 <div class="panel-heading"></div>
+                  <div class="panel-body">
+                    <center><i class="fa fa-bed fa-5x"></i></center>
+                    <h3 class="text-center">Sleep</h3>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                        <span class="sr-only">70% Complete (success)</span>
+                      </div>
+                    </div>
+                 </div>
+               </div>
+              </div>
+          </div>
+        </div><!-- /.container -->
+        </div><!-- /.container-fluid -->
+
+     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="myModalLabel"><%= @user.fname %> <%= @user.lname %></h4>
-          </div>
           <div class="modal-body">
-            <center><%= image_tag @user.avatar.url, class: "img img-responsive" %></center>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <!-- Displaying Profile Pic -->
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close fa-2x"></i></button>
+            <% if @user.avatar_file_name != nil %>
+                <center><%= image_tag @user.avatar.url(:medium), size: "100%", class: "img img-responsive" %></center>
+            <% elsif @user.image != nil %>
+                <center><%= image_tag @user.image, width: "100%", class: "img img-responsive" %></center>
+            <% else %>
+                <center><%= image_tag "http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-primary-no-profile-pic.jpg", size: "300", class: "img img-responsive" %></center>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
     <!--Modal End -->
 
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-      <div class="row">
-          <div class="panel panel-default">
-            <div class="panel-heading">About</div>
-            <div class="panel-body">
-              <p>
-                
-              </p>
-            </div>
-          </div>
-      </div>
-      <div class="row">
-        <div class="panel panel-default">
-          <div class="panel-heading">Contact</div>
-          <div class="panel-body">
-            <p>
-              Email: <%= @user.email %>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <% javascript_include_tag "/hook/mousewheel.js" %>
+    <% javascript_include_tag "/hook/hook.js" %>
 
+    <script type="text/javascript">
+      $('#hook').hook();
+    </script>
+    <script type="text/javascript" src="jquery.mmenu.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('#my-menu').mmenu();
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('[data-toggle=offcanvas]').click(function() {
+          $('.row-offcanvas').toggleClass('active');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      function htmlbodyHeightUpdate(){
+    var height3 = $( window ).height()
+    var height1 = $('.nav').height()+50
+    height2 = $('.main').height()
+    if(height2 > height3){
+      $('html').height(Math.max(height1,height3,height2)+10);
+      $('body').height(Math.max(height1,height3,height2)+10);
+    }
+    else
+    {
+      $('html').height(Math.max(height1,height3,height2));
+      $('body').height(Math.max(height1,height3,height2));
+    }
     
-    <div class="col-xs-12 col-sm-12 col-md-offset-1 col-lg-offset-1 col-md-7 col-lg-7">
-      <div class="row">
-        <div class="panel panel-default">
-          <div class="panel-heading">User Articles</div>
-          <div class="panel-body">
-            
-          </div>
-        </div>
-      </div>
-    </div>
+  }
+  $(document).ready(function () {
+    htmlbodyHeightUpdate()
+    $( window ).resize(function() {
+      htmlbodyHeightUpdate()
+    });
+    $( window ).scroll(function() {
+      height2 = $('.main').height()
+        htmlbodyHeightUpdate()
+    });
+  });
+    </script>
   </body>
 </html>

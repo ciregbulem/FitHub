@@ -4,7 +4,7 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
-    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/lumen/bootstrap.min.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/lumen/bootstrap.min.css" rel="stylesheet">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body style="background-color: #F7F7F7;">
@@ -13,12 +13,17 @@
       <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-inverse-collapse">
         <span class="fa fa-navicon fa-2x"></span>
       </button>
-      <%= link_to "Rails Blog", root_path, class: "navbar-brand" %>
+      <% if user_signed_in? || admin_signed_in? %>
+        <%= link_to root_path, class: "navbar-brand" do %>
+          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo.png", height: '40.6', width: '100') %>
+        <% end %>
+      <% else %>
+        <%= link_to root_path, class: "navbar-brand" do %>
+          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo.png", height: '31.23', width: '76.92') %>
+        <% end %>
+      <% end %>
     </div>
     <div class="navbar-collapse collapse" id="navbar-inverse-collapse">
-      <ul class="nav navbar-nav">
-        <li><%= link_to 'Home', root_path%></li>
-      </ul>
 
       <ul class="nav navbar-nav navbar-right">
         <% if user_signed_in? != true %>
@@ -32,29 +37,29 @@
                   <i class="fa fa-check"></i> Sign Up
               <% end %>
           </li>
-      <% else %>
+        <% else %>
           <li>
             <%= link_to current_user do %>
               <% if current_user.avatar_file_name != nil %>
-                  <%= image_tag current_user.avatar.url(:thumb), class: " img-rounded" %>
+                  <%= image_tag current_user.avatar.url(:thumb), class: " img-circle" %>
                 <% elsif current_user.image != nil %>
-                  <%= image_tag current_user.image, size: "32", class: " img-rounded" %>
+                  <%= image_tag current_user.image, size: "32", class: " img-circle" %>
                 <% else %>
                   <img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" alt="No Avatar Exists" class="img img-rounded" width="32" height="32">
                 <% end %>
               <% end %>
           </li>
         <% end %>
-          <% if user_signed_in? %>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle btn btn-lg" type="button" id="dropdownMenu2" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog fa-2x"></span></a>
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
-                <li role="presentation" class="dropdown-header">Profile</li>
-                <li role="presentation"><%= link_to "Edit", edit_user_registration_path %></li>
-                <li role="presentation"><%= link_to "Sign Out", destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-              </ul>
-            </li>
-          <% end %>
+        <% if user_signed_in? %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle btn btn-lg" type="button" id="dropdownMenu2" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog fa-2x"></span></a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+              <li role="presentation" class="dropdown-header">Profile</li>
+              <li role="presentation"><%= link_to "Edit", edit_user_registration_path %></li>
+              <li role="presentation"><%= link_to "Sign Out", destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            </ul>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
@@ -80,9 +85,9 @@
     </div>
     <% end %>
 </div>
-    <div class="container">
-	<div class="col-xs-12 col-sm-12 col md-12 col-lg-12">
-
+  <div class="container">
+	 <div class="col-xs-12 col-sm-12 col md-12 col-lg-12">
+    <br>
 	  <%= yield %>
 	</div>
     </div>

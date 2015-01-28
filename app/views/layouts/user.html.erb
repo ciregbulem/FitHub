@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <link href="/app/assets/stylesheets/lumen.bootstrap.css" rel="stylesheet">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #49dda5;">
+    <div class="navbar navbar-inverse">
+	    <div class="navbar-header">
+	      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-inverse-collapse">
+	        <span class="fa fa-navicon fa-2x"></span>
+	      </button>
+	      <% if user_signed_in? || admin_signed_in? %>
+	        <%= link_to root_path, class: "navbar-brand" do %>
+	          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo.png", height: '40.6', width: '100') %>
+	        <% end %>
+	      <% else %>
+	        <%= link_to root_path, class: "navbar-brand" do %>
+	          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo.png", height: '31.23', width: '76.92') %>
+	        <% end %>
+	      <% end %>
+	    </div>
+	    <div class="navbar-collapse collapse" id="navbar-inverse-collapse">
+
+	      <ul class="nav navbar-nav navbar-right">
+	        <% if user_signed_in? != true %>
+	          <li>
+	            <%= link_to new_user_session_path do %>
+	              <i class="fa fa-sign-in"></i> Login
+	            <% end %>   
+	          </li>
+	          <li>
+	            <%= link_to new_user_registration_path do %>
+	                  <i class="fa fa-check"></i> Sign Up
+	              <% end %>
+	          </li>
+	        <% else %>
+	          <li>
+	            <%= link_to current_user do %>
+	              <% if current_user.avatar_file_name != nil %>
+	                  <%= image_tag current_user.avatar.url(:thumb), class: " img img-circle" %>
+	                <% elsif current_user.image != nil %>
+	                  <%= image_tag current_user.image, size: "40", class: " img img-circle" %>
+	                <% else %>
+	                  <img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" alt="No Avatar Exists" class="img img-rounded" width="32" height="32">
+	                <% end %>
+	              <% end %>
+	          </li>
+	        <% end %>
+	        <% if user_signed_in? %>
+	          <li class="dropdown hidden-xs">
+	            <a href="#" class="dropdown-toggle btn btn-lg" type="button" id="dropdownMenu2" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog fa-3x"></span></a>
+	            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+	              <li role="presentation" class="dropdown-header">Profile</li>
+	              <li role="presentation"><%= link_to "Edit", edit_user_registration_path %></li>
+	              <li role="presentation"><%= link_to "Sign Out", destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+	            </ul>
+	          </li>
+	        <% end %>
+	      </ul>
+	    </div>
+	  </div>
+  	</div>
+    <% if flash.alert || flash.notice %>
+    
+    <div class="container">
+        <div class="row">
+            <div id="flash">
+              <% if flash.alert %>
+                  <h6 class="alert alert-danger alert-dismissible" role="alert">
+                      <%= flash.alert %>
+                  </h6>
+              <% end %>
+            </div>
+            <div id="notice">
+              <% if flash.notice %>
+                      <h6 class="alert alert-success alert-dismissible" role="alert">
+                          <%= flash.notice %>
+                      </h6>
+              <% end %>
+            </div>
+        </div>
+    </div>
+    <% end %>
+	<%= yield %>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

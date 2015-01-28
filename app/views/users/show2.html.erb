@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= @user.fname %> <%= @user.lname %></title>
+  <link rel="stylesheet" type="text/css" href="jquery.mmenu.css">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.js"></script>
+  <script type="text/javascript" src="jquery.mmenu.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/app/assets/stylesheets/sidebar.css">
+</head>
+  <body style="background-color: #F7F7F7;">
+  <div class="container-fluid">  
+
+    <nav class="navbar navbar-inverse sidebar" role="navigation">
+    <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <center><span class="fa fa-navicon fa-2x"</span></center>
+      </button>
+        <% if @user.avatar.url(:medium) == nil %>
+          <center><%= image_tag @user.avatar.url(:medium), class: "img img-responsive img-thumbnail pull-right", id: "avatar" %></center>
+        <% elsif @user.image != nil %>
+          <center><%= image_tag @user.image, size: "50", class: "img img-responsive img-thumbnail pull-right", id: "avatar" %></center>
+        
+        <% else %>
+
+        <% end %>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+        <li ><a href="#">Profile<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+        <li ><a href="#">Messages<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
+          <ul class="dropdown-menu forAnimate" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+          <!-- sidebar -->
+          <!-- <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+              <% if @user.avatar.url(:medium) == nil %>
+                <%= image_tag @user.avatar.url(:medium), class: "img img-responsive" %>
+              <% elsif @user.image != nil %>
+                <%= image_tag @user.image, size: "356", class: "img img-responsive" %>
+              
+              <% else %>
+
+              <% end %>
+              
+              <ul class="nav">
+                <li class="active"><a href="#" class="active link"><i class="fa fa-bar-chart fa-2x"> </i> Dashboard</a></li>
+                <li><a href="#" class="link"><i class="fa fa- fa-2x"> </i> Activities</a></li>
+                <li><a href="#" class="link"><i class="fa fa-user fa-2x"> </i> Profile</a></li>
+                <li><a href="#" class="link"><i class="fa fa-envelope fa-2x"> </i> Contact</a></li>
+                <li><a href="#" class="link"><i class="fa fa-gear fa-2x"> </i> Settings</a></li>
+              </ul>
+          </div> -->
+      
+          <!-- main area -->
+          <div class="container-fluid">
+            <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
+               <!-- 2nd Navbar --> 
+               <div class="btn-group btn-group-justified">
+                <a class="btn btn-default btn-lg btn-block"><i class="glyphicon glyphicon-fire fa-2x"></i> Calories</a>
+                <a class="btn btn-default btn-lg btn-block"><i class="fa fa-heartbeat fa-2x"></i> Steps</a>
+                <a class="btn btn-default btn-lg btn-block"><i class="fa fa-bicycle fa-2x"></i> Miles</a>
+                <a class="btn btn-default btn-lg btn-block"><i class="fa fa-bed fa-2x"></i> Sleep</a> 
+              </div> 
+
+              <table class="table">
+                <tr>
+                  <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                   <div class="panel">
+                     <div class="panel-heading"></div>
+                      <div class="panel-body">
+                        <center><i class="glyphicon glyphicon-fire fa-5x"></i></center>
+                        <h3 class="text-center">Calories</h3>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                            <span class="sr-only">60% Complete (success)</span>
+                          </div>
+                        </div>
+                     </div>
+                   </div>
+                  </td>
+                  <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">               
+                   <div class="panel">
+                     <div class="panel-heading"></div>
+                     <div class="panel-body">
+                      <center><i class="fa fa-heartbeat fa-5x"></i></center>
+                      <h3 class="text-center">Steps</h3>
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%">
+                          <span class="sr-only">30% Complete (success)</span>
+                        </div>
+                      </div>
+                     </div>
+                   </div>
+                  </td>
+                  <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                   <div class="panel">
+                     <div class="panel-heading"></div>
+                      <div class="panel-body">
+                        <center><i class="fa fa-bicycle fa-5x"></i></center>
+                        <h3 class="text-center">Miles</h3>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 90%">
+                            <span class="sr-only">90% Complete (success)</span>
+                          </div>
+                        </div>
+                     </div>
+                   </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                   <div class="panel">
+                     <div class="panel-heading"></div>
+                      <div class="panel-body">
+                        <center><i class="fa fa-bed fa-5x"></i></center>
+                        <h3 class="text-center">Sleep</h3>
+                        <div class="progress">
+                          <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                            <span class="sr-only">70% Complete (success)</span>
+                          </div>
+                        </div>
+                     </div>
+                   </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            </div><!-- /.col-xs-12 main -->
+      </div><!--/.row-->
+  </div><!--/.page-container-->
+
+
+
+
+
+
+        <!--<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">          
+          <% if @user.avatar_file_name != nil %>
+            <!-- Button trigger modal
+            <a type="button" data-toggle="modal" data-target="#myModal" class="btn">
+              <%= image_tag @user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-rounded" %>
+            </a>
+             
+          <% elsif @user.image != nil %>
+            <%= image_tag @user.image, size: "300", class: "img img-rounded img-thumbnail" %>
+          <% else %>
+            <img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-primary-no-profile-pic.jpg" alt="No Avatar Exists" class="img img-rounded img-thumbnail" width="300" height="300">
+          <% end %>
+        </div>
+        <div class="col-xs-12 col-sm-9 col-md-8 col-lg-8">
+          <h1><%= @user.fname %> <%= @user.lname %><br><small>(<%= @user.email %>)</small></h1>
+          <% if current_user.id == @user.id %>
+            <%= link_to "Edit Profile", edit_user_registration_path, :class => "btn btn-primary btn-sm" %>
+          <% end %>
+          <br>
+        </div>  
+      </div>
+    </div>
+
+    <!-- Modal
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel"><%= @user.fname %> <%= @user.lname %></h4>
+          </div>
+          <div class="modal-body">
+            <center><%= image_tag @user.avatar.url, class: "img img-responsive" %></center>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Modal End 
+
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+      <div class="row">
+          <div class="panel panel-primary">
+            <div class="panel-heading">About</div>
+            <div class="panel-body">
+              <p>
+                
+              </p>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="panel panel-primary">
+          <div class="panel-heading">Contact</div>
+          <div class="panel-body">
+            <p>
+              Email: <%= @user.email %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="col-xs-12 col-sm-12 col-md-offset-1 col-lg-offset-1 col-md-7 col-lg-7">
+      <div class="row">
+        <div class="panel panel-primary">
+          <div class="panel-heading">User Articles</div>
+          <div class="panel-body">
+            
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('#my-menu').mmenu();
+      });
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('[data-toggle=offcanvas]').click(function() {
+          $('.row-offcanvas').toggleClass('active');
+        });
+      });
+    </script>
+    <script type="text/javascript">
+      function htmlbodyHeightUpdate(){
+    var height3 = $( window ).height()
+    var height1 = $('.nav').height()+50
+    height2 = $('.main').height()
+    if(height2 > height3){
+      $('html').height(Math.max(height1,height3,height2)+10);
+      $('body').height(Math.max(height1,height3,height2)+10);
+    }
+    else
+    {
+      $('html').height(Math.max(height1,height3,height2));
+      $('body').height(Math.max(height1,height3,height2));
+    }
+    
+  }
+  $(document).ready(function () {
+    htmlbodyHeightUpdate()
+    $( window ).resize(function() {
+      htmlbodyHeightUpdate()
+    });
+    $( window ).scroll(function() {
+      height2 = $('.main').height()
+        htmlbodyHeightUpdate()
+    });
+  });
+    </script>
+  </body>
+</html>

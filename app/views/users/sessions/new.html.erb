@@ -1,26 +1,36 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
-
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="hidden-xs col-sm-4 col-md-4 col-lg-4">
+      <img src="https://s3-us-west-1.amazonaws.com/chudiblog/Site+Imagery/login.png" class="img-responsive img-rounded" alt="No-Image">
     </div>
-  <% end -%>
+    <div class="col-xs-12 col-sm-offset-1 col-sm-7 col-md-offset-1 col-md-7 col-lg-offset-1 col-lg-7">
+      <h2>Login</h2>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
+      <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="field has_success">
+          <%= f.email_field :email, autofocus: true %>
+        </div>
 
-<%= render "users/shared/links" %>
+        <div class="field">
+          <%= f.password_field :password, autocomplete: "off" %>
+        </div>
+
+        <% if devise_mapping.rememberable? -%>
+          <div class="field">
+            <%= f.check_box :remember_me %>
+          </div>
+        <% end -%>
+
+        <div class="actions">
+          <%= f.primary "Login" %>
+        </div>
+      <% end %>
+      <br>
+      <%= render "users/shared/links" %>
+    </div>
+  </body>
+</html>
