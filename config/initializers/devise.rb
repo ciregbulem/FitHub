@@ -140,7 +140,7 @@ Devise.setup do |config|
 
   # ==> Configuration for :validatable
   # Range for password length.
-  config.password_length = 8..128
+  config.password_length = 6..128
 
   # Email regex used to validate email formats. It simply asserts that
   # one (and only one) @ exists in the given string. This is mainly
@@ -236,8 +236,8 @@ Devise.setup do |config|
   config.omniauth :facebook, ENV['facebook_app_id'], ENV['facebook_app_secret'], scope: 'email,public_profile,user_friends', display: 'page', info_fields: 'email,first_name,last_name,location,gender,birthday,link', :image_size => {width: '300', height: '300'}, :client_options => {:site => 'https://graph.facebook.com/v2.0',
       :authorize_url => "https://www.facebook.com/v2.0/dialog/oauth"}
                   
-  config.omniauth :fitbit, ENV['fitbit_app_key'], ENV['fitbit_app_secret'], :client_options => {:authorize_url => "https://www.fitbit.com/oauth/authorize"}
-
+  config.omniauth :fitbit, ENV['fitbit_app_key'], ENV['fitbit_app_secret']
+  
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

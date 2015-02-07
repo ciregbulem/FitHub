@@ -60,11 +60,13 @@
                   <li><a href="#info" class="nav-link page-scroll smooth-scroll">Basic Info</a></li>
                   <li><a href="#email-password" class="nav-link page-scroll smooth-scroll">Email & Password</a></li>
                   <li><a href="#deactivate" class="nav-link page-scroll smooth-scroll">Deactivate</a></li>
-                  <li>
-                    <%= link_to omniauth_authorize_path(current_user, :fitbit) do %>
-                    <button class="btn btn-success">Connect your Fitbit</button>
-                    <% end %>
-                </li>
+                  <% if @user.fitbit_id == nil %>
+                    <li>
+                      <%= link_to omniauth_authorize_path(current_user, :fitbit) do %>
+                      <button class="btn btn-success">Connect Fitbit Account</button>
+                      <% end %>
+                    </li>
+                  <% end %>
                 </ul>
         </div>
       </div>

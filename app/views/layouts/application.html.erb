@@ -3,11 +3,13 @@
 <head>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  
   <%= csrf_meta_tags %>
   <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.1/lumen/bootstrap.min.css" rel="stylesheet">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/app/assets/stylesheets/basic-page.css">
 </head>
-<body style="background-color: #F7F7F7;">
+<body>
     <div class="navbar navbar-inverse">
     <div class="navbar-header">
       <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-inverse-collapse">
@@ -87,7 +89,7 @@
 </div>
   <div class="container">
 	 <div class="col-xs-12 col-sm-12 col md-12 col-lg-12">
-    <br>
+   <br>
 	  <%= yield %>
 	</div>
     </div>
@@ -95,6 +97,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Flash Toggle & Alert Toggle -->
     <script type="text/javascript">
       $('[data-toggle=dropdown]').dropdown()
       $(document).ready(function(){
@@ -108,34 +112,36 @@
           $('#notice').remove();
         }, 6000);
        })
-    </script>
+    </script><!-- Flash Toggle & Alert Toggle -->
+
+    <!-- Smooth Scroll -->
     <script type="text/javascript">
       (function (jQuery) {
-    jQuery.mark = {
-      jump: function (options) {
-        var defaults = {
-          selector: 'a.smooth-scroll'
-        };
-        if (typeof options == 'string') defaults.selector = options;
-        var options = jQuery.extend(defaults, options);
-        return jQuery(options.selector).click(function (e) {
-          var jumpobj = jQuery(this);
-          var target = jumpobj.attr('href');
-          var thespeed = 1000;
-          var offset = jQuery(target).offset().top;
-          jQuery('html,body').animate({
-            scrollTop: offset
-          }, thespeed, 'swing')
-          e.preventDefault();
-        })
-      }
-    }
-  })(jQuery);
+        jQuery.mark = {
+          jump: function (options) {
+            var defaults = {
+              selector: 'a.smooth-scroll'
+            };
+            if (typeof options == 'string') defaults.selector = options;
+            var options = jQuery.extend(defaults, options);
+            return jQuery(options.selector).click(function (e) {
+              var jumpobj = jQuery(this);
+              var target = jumpobj.attr('href');
+              var thespeed = 1000;
+              var offset = jQuery(target).offset().top;
+              jQuery('html,body').animate({
+                scrollTop: offset
+              }, thespeed, 'swing')
+              e.preventDefault();
+            })
+          }
+        }
+      })(jQuery);
 
 
-  jQuery(function(){  
-    jQuery.mark.jump();
-  });
-    </script>
+      jQuery(function(){  
+        jQuery.mark.jump();
+      });
+  </script><!-- Smooth Scroll -->
 </body>
 </html>

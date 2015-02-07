@@ -1,66 +1,68 @@
+<body style="background-color: #49dda5;">
 	<br>
-	<div class="container-fluid" style="background-color: #49dda5;">
+	<div class="container-fluid">
 		
-	<div class="hidden-xs hidden-sm col-md-2 col-lg-2">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<center>
-				<% if current_user.avatar_file_name != nil %>
-					<%= image_tag current_user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-circle", size: "175"%>
-				<% elsif current_user.image != nil %>	
-					<%= image_tag current_user.image, class: "img img-responsive img-thumbnail img-circle", size: "175" %>
-				<% else %>
-					<img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" height="175" width="175">
-				<% end %>
-				</center>
-					<br>
-					<a class="btn btn-default btn-block" href="#"><i class="fa fa-home fa-2x"></i> Home</a>
-					<a class="btn btn-default btn-block" href="#"><i class="fa fa-home fa-2x"></i> Profile</a>
-					<a class="btn btn-default btn-block" href="#"><i class="fa fa-home fa-2x"></i> Bonuses</a>
-			</div>	
-		</div>
-	</div>
-		<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-			<div class="panel panel-default">
-				<div class="panel-body">
-					<table class="table table-responsive table-hover"> 
-						<% @users.each do |user| %>
-							<div>
-								<div >
-									<tr>
-										
-											<td>
-												<div class="row">
-												<div class="col-xs-10 col-sm-10 col-md-4 col-lg-4 text-center">
-													<% if user.avatar_file_name != nil %>
-														<%= image_tag user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-circle", size: "175"%>
-													<% elsif user.image != nil %>	
-														<%= image_tag user.image, class: "img img-responsive img-thumbnail img-circle", size: "175" %>
-													<% else %>
-														<img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" height="175" width="175">
-													<% end %>	
-												</div>
-												<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8"><h1 class="text-muted"><a class="text-muted"href="<%= user_path(user) %>"><%= user.fname %></a></h1>
-												<p><%= truncate(user.about, length: 600, omission: " [...]") %></p>
-												<div class="btn-group">
-													<a type="button" href="<%= user_path(user) %>" class="btn btn-primary"><i class="fa fa-eye"></i> View</a> 
-													<% if user_signed_in? %>
-														<a type="button" href="<%= edit_user_registration_path(user) %>" class="btn btn-default"><i class="fa fa-edit"></i> Edit</a> 
-														<%= link_to user_path(user), method: :delete, data: { confirm: 'Are you sure?' } do %>
-															<a type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
-														<% end %>
-													<% end %>
-												</div>
-												</div>
-												</div>
-											</td>
-									</tr>
-								</div>
-							</div>
+		<% if user_signed_in? %>
+			<div class="hidden-xs hidden-sm col-md-2 col-lg-2">
+				<div class="panel panel-default fixed-top">
+					<div class="panel-body">
+						<center>
+						<% if current_user.avatar_file_name != nil %>
+							<%= image_tag current_user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-circle", size: "175"%>
+						<% elsif current_user.image != nil %>	
+							<%= image_tag current_user.image, class: "img img-responsive img-thumbnail img-circle", size: "175" %>
+						<% else %>
+							<img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" height="175" width="175">
 						<% end %>
-					</table>
-					<%= will_paginate @users, renderer: BootstrapPagination::Rails %>
+						</center>
+							<br>
+							<a class="btn btn-default btn-block" href="/"><i class="fa fa-home fa-2x"></i> Home</a>
+							<a class="btn btn-default btn-block" href="<%= user_path(current_user) %>"><i class="glyphicon glyphicon-user fa-2x"></i> Profile</a>
+							<a class="btn btn-default btn-block" href="#"><i class="fa fa-check fa-2x"></i> Bonuses</a>
+					</div>	
 				</div>
 			</div>
-		</div>
+		<% end %>
+			<div class="hidden-md hidden-lg col-xs-1 col-sm-1"></div>
+			<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<table class="table table-striped"> 
+							<% @users.each do |user| %>
+										<tr>
+												<td>
+													<div class="row">
+													<div class="col-xs-10 col-sm-10 col-md-4 col-lg-4 text-center">
+														<%= link_to user_path(user), class: "btn" do %>
+															<% if user.avatar_file_name != nil %>
+																<%= image_tag user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-circle", size: "175"%>
+															<% elsif user.image != nil %>	
+																<%= image_tag user.image, class: "img img-responsive img-thumbnail img-circle", size: "175" %>
+															<% else %>
+																<img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" height="175" width="175">
+															<% end %>	
+														<% end %>
+													</div>
+													<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8"><h1 class="text-muted"><a class="text-muted"href="<%= user_path(user) %>"><%= user.fname %></a></h1>
+													<p><%= truncate(user.about, length: 600, omission: " [...]") %></p>
+													<div class="btn-group">
+														<a type="button" href="<%= user_path(user) %>" class="btn btn-primary"><i class="fa fa-eye"></i> View</a> 
+														<% if user_signed_in? %>
+															<a type="button" href="<%= edit_user_registration_path(user) %>" class="btn btn-default"><i class="fa fa-edit"></i> Edit</a> 
+															<%= link_to user_path(user), method: :delete, data: { confirm: 'Are you sure?' } do %>
+																<a type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+															<% end %>
+														<% end %>
+													</div>
+													</div>
+													</div>
+												</td>
+										</tr>
+							<% end %>
+						</table>
+						<center><%= will_paginate @users, renderer: BootstrapPagination::Rails %></center>
+					</div>
+				</div>
+			</div>
 	</div>
+</body>

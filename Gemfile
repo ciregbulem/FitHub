@@ -18,6 +18,7 @@ gem "papercrop"
 gem 'aws-sdk'
 gem 'figaro'
 gem 'mmenu-rails'
+gem 'high_voltage', '~> 2.2.1'
 ruby '2.0.0'
 
 # Use PostgreSQL as the database for Active Record

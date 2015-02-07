@@ -1,9 +1,9 @@
 class AdminsController < ApplicationController
   before_action :set_admin, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_admin!, :except => [:index, :show]
+  before_filter :authenticate_admin! #, :except => [:index, :show]
 
   def index
-  	@admins = Admin.paginate(:page => params[:page], :per_page => 3)
+  	@admins = Admin.paginate(:page => params[:page], :per_page => 5)
   end
 
   def show

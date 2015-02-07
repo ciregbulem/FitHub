@@ -64,6 +64,7 @@ GEM
     fitgem (0.10.0)
       oauth
     hashie (3.3.2)
+    high_voltage (2.2.1)
     hike (1.2.3)
     i18n (0.7.0)
     jbuilder (2.2.6)
@@ -204,6 +205,7 @@ DEPENDENCIES
   devise
   figaro
   fitgem
+  high_voltage (~> 2.2.1)
   jbuilder (~> 2.0)
   jquery-rails
   mmenu-rails

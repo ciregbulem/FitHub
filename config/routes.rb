@@ -3,7 +3,7 @@ Rails.application.routes.draw do
         sessions: 'users/sessions', omniauth_callbacks: 'users/omniauth_callbacks'
       }
   devise_for :admins, controllers: {
-        sessions: 'users/sessions'
+        sessions: 'admins/sessions'
       }
   resources :users
   resources :admins
@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-   root 'users#index'
+  # root 'users#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

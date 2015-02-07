@@ -4,12 +4,44 @@ class UsersController < ApplicationController
   layout 'user'
 
   def index
-  	@users = User.paginate(:page => params[:page], :per_page => 3)
+  	@users = User.paginate(:page => params[:page], :per_page => 3).order('created_at DESC')
   end
 
   def show
     @user = User.find(params[:id])
-  end
+	def linked?
+      @user.oauth_token.present? && @user.oauth_secret.present?
+    end
+
+    raise "Account is not linked with a Fitbit account" unless linked?
+    @client ||= Fitgem::Client.new(
+            :consumer_key => ENV["fitbit_app_key"],
+            :consumer_secret => ENV["fitbit_app_secret"],
+            :token => @user.oauth_token,
+            :secret => @user.oauth_secret,
+            :user_id => @user.fitbit_id
+          )
+    ## Fitbit Data Breakdown (today, month, year) ## 
+    # Today's Calories
+    @todays_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1d')
+    # Today's Steps
+    @todays_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1d')
+    # Today's Distance
+    @todays_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1d')
+    # Percentage of Daily Goal
+    @daily_goal_cals = @client.daily_goals
+    @todays_cals_float = @todays_cals['activities-tracker-calories'][0]['value'].to_f
+    @todays_cals_percent = @todays_cals_float
+
+    # Past Month's Calories
+    @months_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1m')
+    # Past Month's Steps
+    @months_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1m')
+    # Past Month's Distance
+    @months_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1m')
+
+
+  end # Show END
 
   def edit
   	@user = current_user
