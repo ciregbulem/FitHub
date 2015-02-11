@@ -2,6 +2,14 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
         sessions: 'users/sessions', omniauth_callbacks: 'users/omniauth_callbacks'
       }
+  #devise_scope :user do
+  #  authenticated :user do
+  #    root :to => 'users#show', as: :authenticated_root
+  #  end
+  #  unauthenticated :user do
+  #    root :to => 'pages#welcome' as: :unauthenticated_root
+  #  end
+  #end
   devise_for :admins, controllers: {
         sessions: 'admins/sessions'
       }

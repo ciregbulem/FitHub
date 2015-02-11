@@ -21,26 +21,47 @@ class UsersController < ApplicationController
             :secret => @user.oauth_secret,
             :user_id => @user.fitbit_id
           )
-    ## Fitbit Data Breakdown (today, month, year) ## 
-    # Today's Calories
-    @todays_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1d')
-    # Today's Steps
-    @todays_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1d')
-    # Today's Distance
-    @todays_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1d')
-    # Percentage of Daily Goal
-    @daily_goal_cals = @client.daily_goals
-    @todays_cals_float = @todays_cals['activities-tracker-calories'][0]['value'].to_f
-    @todays_cals_percent = @todays_cals_float
+    #if @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1d') == nil
+    #	flash[:alert] = 'Could not connect to Fitbit. Please try again in a while.'
+    #else
 
-    # Past Month's Calories
-    @months_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1m')
-    # Past Month's Steps
-    @months_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1m')
-    # Past Month's Distance
-    @months_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1m')
+	    ## Fitbit Data Breakdown (today, month, year) ## 
+	    # Today's Calories
+	    @todays_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1d')
+	    # Today's Steps
+	    @todays_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1d')
+	    # Today's Distance
+	    @todays_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1d')
+	    @todays_sleep = @client.data_by_time_range('/sleep/efficiency', :base_date => @client.format_date('today'), :period => '1d')
+	    
+	    # Percentage of Daily Goal
+	    
+	    # Calories
+	    @daily_goal_cals_float = @user.daily_cals_goal.to_f # Daily Goal for Calories
+	    @todays_cals_float = @todays_cals['activities-tracker-calories'][0]['value'].to_f # Calories burned Today
+	    @percentOfCals = ((@todays_cals_float/@daily_goal_cals_float) * 100).round(0).to_s + "%" # Percentage of Calories burned Goal
 
+	    # Steps
+	    @daily_goal_steps_float = @user.daily_steps_goal.to_f # Daily Goal for Steps
+	    @todays_steps_float = @todays_steps['activities-tracker-steps'][0]['value'].to_f # Steps taken Today
+	    @percentOfSteps = ((@todays_steps_float/@daily_goal_steps_float) * 100).round(0).to_s + "%" # Percentage of Steps taken Goal
 
+	    # Miles
+	    @daily_goal_dist_float = @user.daily_dist_goal.to_f # Daily Goal for Distance
+	    @todays_dist_float = @todays_dist['activities-tracker-distance'][0]['value'].to_f # Distance traveled Today
+	    @percentOfDist = ((@todays_dist_float/@daily_goal_dist_float) * 100).round(0).to_s + "%" # Percentage of Distance traveled Goal
+
+	    # Sleep
+	    @percentOfSleep = @todays_sleep['sleep-efficiency'][0]['value'].to_s + "%"
+
+	    # Past Month's Calories
+	    @months_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1m')
+	    # Past Month's Steps
+	    @months_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1m')
+	    # Past Month's Distance
+	    @months_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1m')
+
+	#end
   end # Show END
 
   def edit

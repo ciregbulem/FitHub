@@ -45,13 +45,33 @@ class User < ActiveRecord::Base
           fitbit_id: auth.uid,
           oauth_token: auth['credentials']['token'],
           oauth_secret: auth['credentials']['secret'],
-          oauth_expires_at: auth.credentials.expires_at
+          oauth_expires_at: auth.credentials.expires_at,
+          fitbit_image: auth.info.image
         )
+
         user.skip_confirmation! if user.respond_to?(:skip_confirmation)
         user.save!
 
+          @client ||= Fitgem::Client.new(
+          :consumer_key => ENV["fitbit_app_key"],
+          :consumer_secret => ENV["fitbit_app_secret"],
+          :token => user.oauth_token,
+          :secret => user.oauth_secret,
+          :user_id => user.fitbit_id
+        )
+        user.fitbit_image = @client.user_info['user']['avatar150']
+        user.daily_cals_goal = @client.daily_goals['goals']['caloriesOut']
+        user.daily_steps_goal = @client.daily_goals['goals']['steps']
+        user.daily_dist_goal = @client.daily_goals['goals']['distance']
       else
-
+        user.fitbit_id = auth.uid
+        user.fitbit_image = @client.user_info['user']['avatar150']
+        user.oauth_token = auth['credentials']['token']
+        user.oauth_secret = auth['credentials']['secret']
+        #user.fitbit_image = auth.info.image
+        user.daily_cals_goal = @client.daily_goals['goals']['caloriesOut']
+        user.daily_steps_goal = @client.daily_goals['goals']['steps']
+        user.daily_dist_goal = @client.daily_goals['goals']['distance']
 
       end
 
