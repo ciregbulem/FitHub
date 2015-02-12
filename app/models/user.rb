@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
         user.skip_confirmation! if user.respond_to?(:skip_confirmation)
         user.save!
 
-          @client ||= Fitgem::Client.new(
+          @client = Fitgem::Client.new(
           :consumer_key => ENV["fitbit_app_key"],
           :consumer_secret => ENV["fitbit_app_secret"],
           :token => user.oauth_token,
