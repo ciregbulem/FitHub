@@ -1,28 +1,25 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Download the source code or clone the repository
 
-Things you may want to cover:
+Step-By-Step:
 
-* Ruby version
+* Navigate to rails application folder "FitHub"
 
-* System dependencies
+* run $ bundle install
 
-* Configuration
+* run $ rake db:migrate
 
-* Database creation
+* run $ rail s
 
-* Database initialization
+* Create user account by clicking "Sign Up" button in top-right corner
 
-* How to run the test suite
+* Either sign up with Fitbit account details or connect via the "Edit" page after signup
 
-* Services (job queues, cache servers, search engines, etc.)
+* Once you have authorized your Fitbit account. You will be able to view your fitness breakdown
 
-* Deployment instructions
+* Navigate through display options such as today, week, or month and hit the refresh button to update!
 
-* ...
+* Hope to soon add Jawbone UP integration
 
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+* Enjoy!
