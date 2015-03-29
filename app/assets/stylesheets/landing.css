@@ -1,0 +1,69 @@
+.header 
+{
+	background-image: url("https://s3-us-west-1.amazonaws.com/virt-u/Virt_U_Header_BG.png");
+	padding-top: 30px;
+}
+
+.header h4
+{
+	display: inline;
+	padding: 10px;
+}
+
+.header img
+{
+	padding-left: 20px;
+}
+
+.header a.no-hover:hover
+{
+	text-decoration: none !important;
+	color: #FFFFFF;
+}
+
+.navbar-links a
+{
+	display: inline;
+	color: #FFFFFF;
+	text-decoration: none;
+	padding-bottom: 10px;
+}
+
+.navbar-links a:hover
+{
+	text-decoration: none !important;
+	color: #F7F7F7;
+}
+
+.attention-text
+{
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 400%;
+}
+
+.text-main
+{
+	padding-top: 75px;
+	padding-bottom: 250px;
+}
+
+a.btn-trans
+{
+	border: solid;
+	border-width: 3px;
+	border-color: #FFFFFF;
+	color: #FFFFFF;
+	padding: 20px;
+	text-decoration: none !important;
+}
+
+.main-btn-hover
+{
+	background-color: #FFFFFF;
+}
+
+.main-btn-hover a:hover
+{
+	color: #1abc9c;
+}

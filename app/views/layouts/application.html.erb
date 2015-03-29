@@ -17,11 +17,11 @@
       </button>
       <% if user_signed_in? || admin_signed_in? %>
         <%= link_to root_path, class: "navbar-brand" do %>
-          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo_2.png", height: '40.6', width: '100') %>
+          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo_2.png", height: '49.7', width: '100') %>
         <% end %>
       <% else %>
         <%= link_to root_path, class: "navbar-brand" do %>
-          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo_2.png", height: '31.23', width: '76.92') %>
+          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo_2.png", height: '38.22', width: '76.92') %>
         <% end %>
       <% end %>
     </div>
@@ -43,11 +43,11 @@
           <li>
             <%= link_to current_user do %>
               <% if current_user.fitbit_image != nil %>
-                <%= image_tag current_user.fitbit_image, size: "32", class: "img img-circle" %>
+                <%= image_tag current_user.fitbit_image, size: "40", class: "img img-circle" %>
               <% elsif current_user.avatar_file_name != nil %>
-                  <%= image_tag current_user.avatar.url(:thumb), size: "32", class: "img img-circle" %>
+                  <%= image_tag current_user.avatar.url(:thumb), size: "40", class: "img img-circle" %>
                 <% elsif current_user.image != nil %>
-                  <%= image_tag current_user.image, size: "32", class: " img-circle" %>
+                  <%= image_tag current_user.image, size: "40", class: " img-circle" %>
                 <% else %>
                   <img src="https://s3-us-west-1.amazonaws.com/fithub-development/no-user-image-square.jpg" alt="No Avatar Exists" class="img img-rounded" width="32" height="32">
                 <% end %>
@@ -56,7 +56,7 @@
         <% end %>
         <% if user_signed_in? %>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle btn btn-lg" type="button" id="dropdownMenu2" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog fa-2x"></span></a>
+            <a href="#" class="dropdown-toggle btn btn-lg" type="button" id="dropdownMenu2" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog fa-3x"></span></a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
               <li role="presentation" class="dropdown-header">Profile</li>
               <li role="presentation"><%= link_to "Edit", edit_user_registration_path %></li>
@@ -67,7 +67,7 @@
       </ul>
     </div>
   </div>
-    <% if flash.alert || flash.notice %>
+   <!-- <% if flash.alert || flash.notice %>
     
     <div class="container">
         <div class="row">
@@ -87,7 +87,7 @@
             </div>
         </div>
     </div>
-    <% end %>
+    <% end %> Started adding flash only to pages where they're needed -->
 </div>
   <div class="container">
 	 <div class="col-xs-12 col-sm-12 col md-12 col-lg-12">

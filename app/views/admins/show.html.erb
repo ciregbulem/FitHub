@@ -58,7 +58,7 @@
 													<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8"><h1 class="text-muted"><a class="text-muted"href="<%= user_path(user) %>"><%= user.fname %></a></h1>
 													<p><%= truncate(user.about, length: 600, omission: " [...]") %></p>
 													<div class="btn-group">
-														<a type="button" href="<%= user_path(user) %>" class="btn btn-default"><i class="fa fa-eye"></i> View</a> 
+														<a type="button" href="<%= user_path(user) %>" class="btn btn-primary"><i class="fa fa-eye"></i> View</a> 
 														<% if user_signed_in? %>
 															<a type="button" href="<%= edit_user_registration_path(user) %>" class="btn btn-default"><i class="fa fa-edit"></i> Edit</a> 
 															<%= link_to user_path(user), method: :delete, data: { confirm: 'Are you sure?' } do %>

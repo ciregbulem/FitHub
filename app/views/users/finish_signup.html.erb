@@ -15,6 +15,7 @@
         <%= f.text_field :lname, placeholder: "Last Name", class: "input-lg", label: "Last Name" %> 
         <%= f.email_field :email, class: 'form-control input-lg', placeholder: 'Example: email@me.com' %>
         <p class="help-block">Please confirm your email address. No spam.</p>
+        <%= f.select :insurance_provider, [[1, "Aetna"], [2, "Progressive"], [3, "Humana"], [4, "UnitedHealthCare"], [3, "Cigna"]], { label: "Choose your health insurance provider: " }, { class: "selectpicker" } %>
       </div>
     </div>
     <div class="actions">

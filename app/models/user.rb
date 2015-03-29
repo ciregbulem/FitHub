@@ -29,6 +29,18 @@ class User < ActiveRecord::Base
     # Note that this may leave zombie accounts (with no associated identity) which
     # can be cleaned up at a later date.
     user = signed_in_resource ? signed_in_resource : identity.user
+      @client = Fitgem::Client.new(
+      :consumer_key => ENV["fitbit_app_key"],
+      :consumer_secret => ENV["fitbit_app_secret"],
+      :token => auth['credentials']['token'],
+      :secret => auth['credentials']['secret'],
+      :user_id => auth.uid
+    )
+    #user.todays_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-calories"][0]['value']
+    #user.todays_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-steps"][0]['value']
+    #user.todays_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-distance"][0]['value']
+    #user.todays_sleep = @client.data_by_time_range('/sleep/efficiency', :base_date => @client.format_date('today'), :period => '1d')['sleep-efficiency'][0]['value']
+    #user.save
     
     if user.nil? && auth.provider == 'fitbit'
         email_is_verified = auth.info.email && (auth.info.verified || auth.info.verified_email)
@@ -63,7 +75,19 @@ class User < ActiveRecord::Base
         user.daily_cals_goal = @client.daily_goals['goals']['caloriesOut']
         user.daily_steps_goal = @client.daily_goals['goals']['steps']
         user.daily_dist_goal = @client.daily_goals['goals']['distance']
+        user.todays_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-calories"][0]['value']
+        user.todays_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-steps"][0]['value']
+        user.todays_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-distance"][0]['value']
+        user.todays_sleep = @client.data_by_time_range('/sleep/efficiency', :base_date => @client.format_date('today'), :period => '1d')['sleep-efficiency'][0]['value']
+        user.save
       else
+          @client = Fitgem::Client.new(
+          :consumer_key => ENV["fitbit_app_key"],
+          :consumer_secret => ENV["fitbit_app_secret"],
+          :token => user.oauth_token,
+          :secret => user.oauth_secret,
+          :user_id => user.fitbit_id
+        )
         user.fitbit_id = auth.uid
         user.fitbit_image = @client.user_info['user']['avatar150']
         user.oauth_token = auth['credentials']['token']
@@ -72,7 +96,11 @@ class User < ActiveRecord::Base
         user.daily_cals_goal = @client.daily_goals['goals']['caloriesOut']
         user.daily_steps_goal = @client.daily_goals['goals']['steps']
         user.daily_dist_goal = @client.daily_goals['goals']['distance']
-
+        user.todays_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-calories"][0]['value']
+        user.todays_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-steps"][0]['value']
+        user.todays_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-distance"][0]['value']
+        user.todays_sleep = @client.data_by_time_range('/sleep/efficiency', :base_date => @client.format_date('today'), :period => '1d')['sleep-efficiency'][0]['value']
+        user.save
       end
 
       def has_fitbit_data?
@@ -120,8 +148,17 @@ class User < ActiveRecord::Base
           user.skip_confirmation! if user.respond_to?(:skip_confirmation)
           user.save!
         end
+        user.image = auth.info.image
+        if auth.provider == 'facebook'
+          user.fb_link = auth.raw_info.link
+        end
       end
     end
+    user.image = auth.info.image
+    if auth.provider == 'facebook'
+      user.fb_link = auth.extra.raw_info.link
+    end
+    user.save
 
     # Associate the identity with the user if needed
     if identity.user != user
@@ -136,5 +173,6 @@ class User < ActiveRecord::Base
   end
     
   belongs_to :admin
+  has_many :identities, dependent: :destroy
   validates :email, presence: true
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150208215158) do
+ActiveRecord::Schema.define(version: 20150326163614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -87,6 +87,11 @@ ActiveRecord::Schema.define(version: 20150208215158) do
     t.string   "daily_cals_goal"
     t.string   "daily_steps_goal"
     t.string   "daily_dist_goal"
+    t.string   "todays_cals"
+    t.string   "todays_steps"
+    t.string   "todays_dist"
+    t.string   "todays_sleep"
+    t.string   "insurance_provider"
   end
 
   add_index "users", ["admin_id"], name: "index_users_on_admin_id", using: :btree

@@ -7,7 +7,7 @@
       <li><a href="<%= root_path %>">Home</a></li>
       <li><%= link_to "Users", users_path %></a></li>
       <li><%= link_to current_user.fname, current_user %></li>
-      <li class="active">Edit Profile></li>
+      <li class="active">Edit Profile</li>
     </ol>
     <div class="well well-lg">     
       <div class="row">  
@@ -20,6 +20,8 @@
              
           <% elsif @user.image != nil %>
             <%= image_tag @user.image, size: "300", class: "img img-rounded img-thumbnail" %>
+          <% elsif @user.fitbit_image != nil %>
+            <%= image_tag @user.fitbit_image, size: "225", class: "img img-thumbnail img-circle profile-pic img-responsive" %>
           <% else %>
             <img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" alt="No Avatar Exists" class="img img-rounded" width="300" height="300">
           <% end %>
@@ -60,6 +62,17 @@
                   <li><a href="#info" class="nav-link page-scroll smooth-scroll">Basic Info</a></li>
                   <li><a href="#email-password" class="nav-link page-scroll smooth-scroll">Email & Password</a></li>
                   <li><a href="#deactivate" class="nav-link page-scroll smooth-scroll">Deactivate</a></li>
+                  
+                  <!-- Connect to Facebook -->
+                  <% if @user.fb_link == nil %>
+                    <li>
+                      <%= link_to omniauth_authorize_path(current_user, :facebook) do %>
+                      <button class="btn btn-primary">Connect Facebook Account</button>
+                      <% end %>
+                    </li>
+                  <% end %>
+
+                  <!-- Connect to Fitbit -->
                   <% if @user.fitbit_id == nil %>
                     <li>
                       <%= link_to omniauth_authorize_path(current_user, :fitbit) do %>

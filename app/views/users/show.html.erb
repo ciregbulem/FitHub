@@ -35,50 +35,51 @@
         <div class="row">
 
           <div class="hidden-xs hidden-sm col-md-4 col-lg-4">
-            <% if @user.fitbit_id != nil %>
-              <p>
 
-              </p>
-            <% end %>
           </div>
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center">
             
             <!-- Profile Picture -->
             <a type="button" data-toggle="modal" data-target="#myModal" class="btn">
               <% if @user.fitbit_image != nil %>
-                <%= image_tag @user.fitbit_image, size: "275", class: "img img-thumbnail img-circle profile-pic img-responsive" %>
+                <%= image_tag @user.fitbit_image, size: "225", class: "img img-thumbnail img-circle profile-pic img-responsive" %>
               <% elsif @user.avatar_file_name != nil %>
-                <%= image_tag @user.avatar.url(:medium), size: "275", class: "img img-thumbnail img-circle profile-pic" %>
+                <%= image_tag @user.avatar.url(:medium), size: "225", class: "img img-thumbnail img-circle profile-pic" %>
               <% elsif @user.image != nil %>
-                <%= image_tag @user.image, size: "275", class: "img img-thumbnail img-circle profile-pic" %>
+                <%= image_tag @user.image, size: "225", class: "img img-thumbnail img-circle profile-pic" %>
               <% else %>
-                <%= image_tag "https://s3-us-west-1.amazonaws.com/fithub-development/no-user-image-square.jpg", size: "275", class: "img img-thumbnail img-responsive img-circle profile-pic" %>
+                <%= image_tag "https://s3-us-west-1.amazonaws.com/fithub-development/no-user-image-square.jpg", size: "225", class: "img img-thumbnail img-responsive img-circle profile-pic" %>
               <% end %>
             </a>
             <br>
             <!-- Profile Picture END -->
+            <% if @user.fb_link != nil || @user.tw_link != nil || @user.ig_link != nil %>
+              <!--<div class="panel">
+                <div class="panel-body">
+                <!-- Social Buttons -->
+                <% if @user.fb_link != nil %>
+                  <%= link_to @user.fb_link, class: "btn" do %>
+                    <i class="fa fa-facebook-official fa-2x" style="color: #000000;"></i> <!--Facebook-->
+                  <% end %>
+                <% else %>
+                <% end %>
+              
+                <% if @user.tw_link != nil %>
+                  <%= link_to @user.tw_link, class: "btn" do %>
+                    <i class="fa fa-twitter-square fa-2x" style="color: #4793b9;"></i>
+                  <% end %>
 
-            <!-- Social Buttons -->
-            <% if @user.fb_link != nil %>
-              <%= link_to @user.fb_link, class: "btn" do %>
-                <i class="fa fa-facebook-official fa-3x" style="color: #3b5998;"></i>
-              <% end %>
-            <% else %>
-            <% end %>
-
-            <% if @user.tw_link != nil %>
-              <%= link_to @user.tw_link, class: "btn" do %>
-                <i class="fa fa-twitter-square fa-3x" style="color: #4793b9;"></i>
-              <% end %>
-
-            <% else %>
-            <% end %> 
-
-            <% if @user.ig_link != nil %>
-              <%= link_to @user.ig_link, class: "btn btn-lg" do %>
-                <i class="fa fa-instagram fa-3x" style="color: #004f7e;"></i>
-              <% end %>
-            <% else %>
+                <% else %>
+                <% end %> 
+                
+                <% if @user.ig_link != nil %>
+                  <%= link_to @user.ig_link, class: "btn btn-lg" do %>
+                    <i class="fa fa-instagram fa-2x" style="color: #004f7e;"></i>
+                  <% end %>
+                <% else %>
+                <% end %>
+                <!--</div>
+              </div>-->
             <% end %>
           </div>
           <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
@@ -88,9 +89,7 @@
             <br>
             <br>
             <br>
-            <br>
-            <br>
-            <% if @user.about != nil %>
+            <% if @user.about %>
               <blockquote>
                 <p class="lead">
                   <%= @user.about%>
@@ -119,10 +118,13 @@
           </div> -->
             <div class="tabpanel" role="tablist">
               <div class="btn-group btn-group-justified">
-                <a id="refresh-btn" role="button" class="btn btn-default"><i class="fa fa-refresh fa-2x"></i></a>
+                <!--<a id="refresh-btn" class="btn btn-default"><i class="fa fa-refresh fa-2x"></i></a>-->
+                <%= link_to refresh_path, class: 'btn btn-default' do %>
+                  <i class="fa fa-refresh fa-2x"></i>
+                <% end %>
                 <a id="today-btn" href="#today" role="pill" aria-controls="overview" data-toggle="pill" class="btn btn-default active">Today</a>
-                <a id="week-btn" href="#week" role="pill" aria-controls="info" data-toggle="pill" class="btn btn-default">Week</a>
-                <a id="month-btn" href="#month" role="pill" aria-controls="data" data-toggle="pill" class="btn btn-default">Month</a>
+                <a id="week-btn" href="#week" role="pill" aria-controls="info" data-toggle="pill" class="btn btn-default disabled">Week</a>
+                <a id="month-btn" href="#month" role="pill" aria-controls="data" data-toggle="pill" class="btn btn-default disabled">Month</a>
               </div>
             </div>
           <br>
@@ -133,8 +135,8 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
-                      <center><i class="glyphicon glyphicon-fire fa-5x"></i></center>
-                      <h3 class="text-center">Calories</h3>
+                      <center><i class="glyphicon glyphicon-fire fa-5x text-warning"></i></center>
+                      <h3 class="text-center"><%= @todays_cals_float.to_i %> calories</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfCals %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfCals %>">
                         <span><%= @percentOfCals %></span>
@@ -147,8 +149,8 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                    <div class="panel-body">
-                    <center><i class="fa fa-heartbeat fa-5x"></i></center>
-                    <h3 class="text-center">Steps</h3>
+                    <center><i class="fa fa-heartbeat fa-5x text-success"></i></center>
+                    <h3 class="text-center"><%= @todays_steps_float.to_i %> steps</h3>
                     <div class="progress">
                       <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfSteps %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfSteps %>">
                         <span><%= @percentOfSteps %></span>
@@ -161,8 +163,8 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
-                      <center><i class="fa fa-bicycle fa-5x"></i></center>
-                      <h3 class="text-center">Miles</h3>
+                      <center><i class="fa fa-bicycle fa-5x text-danger"></i></center>
+                      <h3 class="text-center"><%= @todays_dist_float.to_i.round(2) %> miles</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfDist %>">
                           <span><%= @percentOfDist %></span>
@@ -175,8 +177,8 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
-                      <center><i class="fa fa-bed fa-5x"></i></center>
-                      <h3 class="text-center">Sleep</h3>
+                      <center><i class="fa fa-bed fa-5x text-info"></i></center>
+                      <h3 class="text-center"><%= @percentOfSleep %> sleep</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> - '%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfSleep %>">
                           <span class=""><%= @percentOfSleep %></span>
@@ -193,7 +195,7 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
-                      <center><i class="glyphicon glyphicon-fire fa-5x"></i></center>
+                      <center><i class="glyphicon glyphicon-fire fa-5x text-warning"></i></center>
                       <h3 class="text-center">Calories</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfCals %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfCals %>">
@@ -207,7 +209,7 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                    <div class="panel-body">
-                    <center><i class="fa fa-heartbeat fa-5x"></i></center>
+                    <center><i class="fa fa-heartbeat fa-5x text-success"></i></center>
                     <h3 class="text-center">Steps</h3>
                     <div class="progress">
                       <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfSteps %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfSteps %>">
@@ -221,7 +223,7 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
-                      <center><i class="fa fa-bicycle fa-5x"></i></center>
+                      <center><i class="fa fa-bicycle fa-5x text-danger"></i></center>
                       <h3 class="text-center">Miles</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfDist %>">
@@ -235,7 +237,7 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
-                      <center><i class="fa fa-bed fa-5x"></i></center>
+                      <center><i class="fa fa-bed fa-5x text-info"></i></center>
                       <h3 class="text-center">Sleep</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> - '%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfSleep %>">
@@ -253,8 +255,8 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
-                      <center><i class="glyphicon glyphicon-fire fa-5x"></i></center>
-                      <h3 class="text-center">Calories</h3>
+                      <center><i class="glyphicon glyphicon-fire fa-5x text-warning"></i></center>
+                      <h3 class="text-center"><%= @months_cals_float.to_i %> calories</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfMonthsCals %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfMonthsCals %>">
                         <span><%= @percentOfMonthsCals %></span>
@@ -267,7 +269,7 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                    <div class="panel-body">
-                    <center><i class="fa fa-heartbeat fa-5x"></i></center>
+                    <center><i class="fa fa-heartbeat fa-5x text-success"></i></center>
                     <h3 class="text-center">Steps</h3>
                     <div class="progress">
                       <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfMonthsSteps %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfMonthsSteps %>">
@@ -281,7 +283,7 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
-                      <center><i class="fa fa-bicycle fa-5x"></i></center>
+                      <center><i class="fa fa-bicycle fa-5x text-danger"></i></center>
                       <h3 class="text-center">Miles</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfMonthsDist %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfMonthsDist %>">
@@ -295,7 +297,7 @@
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
-                      <center><i class="fa fa-bed fa-5x"></i></center>
+                      <center><i class="fa fa-bed fa-5x text-info"></i></center>
                       <h3 class="text-center">Sleep</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfMonthsSleep %> - '%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfMonthsSleep %>">
@@ -317,19 +319,23 @@
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
+          <div class="modal-header">
+            <h3><%= @user.fname %> <%= @user.lname %></h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close fa-2x"></i></button>
+          </div>
           <div class="modal-body">
             <!-- Displaying Profile Pic -->
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close fa-2x"></i></button>
             <% if @user.fitbit_image != nil %>
-              <center><%= image_tag @user.fitbit_image, size: "275", class: "img img-thumbnail img-circle profile-pic" %></center>
+              <center><%= image_tag @user.fitbit_image, size: "275", class: "img img-thumbnail profile-pic" %></center>
             <% elsif @user.avatar_file_name != nil %>
-                <center><%= image_tag @user.avatar.url(:medium), size: "100%", class: "img img-responsive img-thumbnail img-circle" %></center>
+                <center><%= image_tag @user.avatar.url(:medium), size: "100%", class: "img img-responsive img-thumbnail" %></center>
             <% elsif @user.image != nil %>
-                <center><%= image_tag @user.image, width: "100%", class: "img img-responsive img-circle img-thumbnail" %></center>
+                <center><%= image_tag @user.image, width: "100%", class: "img img-responsive img-thumbnail" %></center>
             <% else %>
                 <center><%= image_tag "https://s3-us-west-1.amazonaws.com/fithub-development/no-user-image-square.jpg", size: "275", class: "img img-responsive img-thumbnail img-circle" %></center>
             <% end %>
           </div>
+          <div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button></div>
         </div>
       </div>
     </div>
@@ -395,6 +401,20 @@
         htmlbodyHeightUpdate()
     });
   });
+    </script>
+    <script type="text/javascript">
+      // Attempting to load JSON fitness data with JS
+      $.('#refresh-btn').click(
+        $.ajax({
+          method: "GET",
+          url: "https://api.fitbit.com/1/2WDL4V/activities/calories/today/1d.json",
+          async: false,
+          dataType: "json",
+          success: function(data){
+            alert(data);
+          };
+        });
+      );
     </script>
   </body>
 </html>

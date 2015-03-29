@@ -15,3 +15,5 @@
 //= require turbolinks
 //= require_tree .
 //= require mmenu
+require bootstrap-growl
+//= require growlyflash

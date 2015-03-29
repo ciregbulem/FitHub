@@ -1,14 +1,15 @@
 class AdminsController < ApplicationController
   before_action :set_admin, only: [:show, :edit, :update, :destroy]
   before_filter :authenticate_admin! #, :except => [:index, :show]
+  layout 'user'
 
   def index
   	@admins = Admin.paginate(:page => params[:page], :per_page => 5)
   end
 
   def show
-    @admin = admin.find(params[:id])
-	@users = User.where(:admin_id => @admin.id).paginate(:page => params[:page], :per_page => 3).order('created_at DESC')
+    @admin = Admin.find(params[:id])
+	  @users = User.where(:admin_id => @admin.id).paginate(:page => params[:page], :per_page => 3).order('created_at DESC')
   end
 
   def edit
@@ -16,7 +17,7 @@ class AdminsController < ApplicationController
   end
 
   def destroy
-	@admin = admin.find(params[:id])
+	@admin = Admin.find(params[:id])
 	@admin.destroy
 		   
 	redirect_to admins_path
@@ -27,7 +28,7 @@ class AdminsController < ApplicationController
 
   	private
     def set_admin
-      @admin = admin.find(params[:id])
+      @admin = Admin.find(params[:id])
     end
 
     def admin_params
