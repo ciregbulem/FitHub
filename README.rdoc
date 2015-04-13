@@ -14,12 +14,12 @@ Step-By-Step:
 
 * Create user account by clicking "Sign Up" button in top-right corner
 
-* Either sign up with Fitbit account details or connect via the "Edit" page after signup
+* Either sign up with your Fitbit account or connect your account on the "Edit" page after signup
 
-* Once you have authorized your Fitbit account. You will be able to view your fitness breakdown
+* Once you have connect your Fitbit account and authorized the web app, you will be able to view your fitness breakdown
 
 * Navigate through display options such as today, week, or month and hit the refresh button to update!
 
-* Hope to soon add Jawbone UP integration
+* Hope to soon add Jawbone UP24 integration
 
 * Enjoy!
