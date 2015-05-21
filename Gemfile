@@ -14,13 +14,9 @@ gem 'omniauth-facebook'
 gem 'omniauth-fitbit'
 gem 'fitgem'
 gem "paperclip", "~> 4.2"
-gem "papercrop"
 gem 'aws-sdk'
 gem 'figaro'
-gem 'mmenu-rails'
 gem 'high_voltage', '~> 2.2.1'
-#gem 'bootstrap-growl-rails', '~> 2.0.0'
-gem 'growlyflash', '~> 0.5.0'
 ruby '2.0.0'
 
 # Use PostgreSQL as the database for Active Record
