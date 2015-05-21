@@ -12,15 +12,19 @@
 development:
   facebook_app_id: "366193726893953"
   facebook_app_secret: "4c4cc00444b865299c8518e6869a92d8" 
-  AWS_access_key_id: "AKIAJH7HCO5AEF5VRNBQ"
-  AWS_secret_access_key: "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"
+  AWS_access_key_id: "AKIAIAGG6TUVXVRCHDCQ"
+  AWS_secret_access_key: "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"
   fitbit_app_key: "60dbf4c7b3d64afca92a5949e7446f7c"
   fitbit_app_secret: "3d2cade2888f4272ba44da35cfb610b3"
+  fitbit_app_key_test: "df79b1480da14daaace174cb04362bd0"
+  fitbit_app_secret_test: "46b5b34e7338475fa65fdbeb1e137e1a"
 
 production:
   facebook_app_id: "362740853905907"
   facebook_app_secret: "e95633669c57fd374b61e669d3dd7205"
-  AWS_access_key_id: "AKIAJH7HCO5AEF5VRNBQ"
-  AWS_secret_access_key: "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"
+  AWS_access_key_id: "AKIAIAGG6TUVXVRCHDCQ"
+  AWS_secret_access_key: "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"
   fitbit_app_key: "60dbf4c7b3d64afca92a5949e7446f7c"
   fitbit_app_secret: "3d2cade2888f4272ba44da35cfb610b3"
+  fitbit_app_key_test: "df79b1480da14daaace174cb04362bd0"
+  fitbit_app_secret_test: "46b5b34e7338475fa65fdbeb1e137e1a"

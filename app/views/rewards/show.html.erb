@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= @reward.title %></title>
+  </head>
+  <body>
+    <div class="container-fluid">
+    <br>
+      <div class="col-lg-12" style="padding-bottom: 20px;">
+        <div class="well">
+          <div class="row">
+              <div class="col-lg-10 col-lg-offset-1">
+                <div class="text-center text-capitalize">
+                	<h1><%= @reward.title %>
+                  <br>
+                    <% if Admin.find(@reward.admin_id).fname != nil %>
+                      <small>Created by: <%= @reward.company %> (<%= Admin.find(@reward.admin_id).fname %> <%= Admin.find(@reward.admin_id).lname %>)</small>
+                  </h1>
+                    <% if admin_signed_in? %>
+                      <% if current_admin.id == @reward.admin_id %>
+                        <div class="btn-group">
+                          <a type="button" class="btn btn-default btn-sm" href="<%= edit_reward_path %>">Edit</a> 
+                          <%= link_to 'Delete', reward_path(@reward), :class => "btn btn-sm btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+                        </div>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </div>
+                <br>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-lg-10 col-lg-offset-1">
+                <br>
+                <p class="lead">
+                  Description: <%= @reward.description %>
+                </p>
+              	<p class="lead">
+                  Reward: $<%= @reward.reward %>.00<br>
+              	  Category: <%= @reward.target_unit %><br>
+                  Goal: <%= number_with_delimiter(@reward.goal, :delimeter => ',') %><br>
+                  Period: <%= @reward.period %><br>
+              	</p>
+              </div>
+          </div>
+        </div>
+        <a href="/rewards" class="btn btn-default btn-block">View All Bonuses</a>
+      </div>
+    </div>
+  </body>
+</html>

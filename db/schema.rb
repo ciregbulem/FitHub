@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150326163614) do
+ActiveRecord::Schema.define(version: 20150423040700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,10 +30,29 @@ ActiveRecord::Schema.define(version: 20150326163614) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.string   "fname"
+    t.string   "lname"
+    t.string   "insurance_provider"
   end
 
   add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
   add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
+
+  create_table "bonus", force: true do |t|
+    t.string   "title"
+    t.string   "target_unit"
+    t.integer  "goal"
+    t.string   "period"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "admin_id"
+  end
+
+  add_index "bonus", ["admin_id"], name: "index_bonus_on_admin_id", using: :btree
 
   create_table "identities", force: true do |t|
     t.integer  "user_id"
@@ -44,6 +63,21 @@ ActiveRecord::Schema.define(version: 20150326163614) do
   end
 
   add_index "identities", ["user_id"], name: "index_identities_on_user_id", using: :btree
+
+  create_table "rewards", force: true do |t|
+    t.string   "title"
+    t.string   "target_unit"
+    t.integer  "goal"
+    t.string   "period"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "admin_id"
+    t.string   "company"
+    t.text     "description"
+    t.integer  "reward"
+  end
+
+  add_index "rewards", ["admin_id"], name: "index_rewards_on_admin_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

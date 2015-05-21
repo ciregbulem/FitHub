@@ -1,0 +1,29 @@
+<%= bootstrap_form_for @reward do |f| %>
+  
+  <% if @reward.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@reward.errors.count, "error") %> prohibited
+    this reward from being created:</h2>
+  
+    <ul>
+    <% @reward.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+  <% end %>
+  <div class="panel">
+    <div class="panel-body">
+      <p>
+        <%= f.text_field :title %>
+        <%= f.text_area :description %>
+        <%= f.number_field :reward %>
+        <%= f.select :target_unit, ["Calories", "Steps", "Miles"], label: "Category" %>
+        <%= f.select :goal, [2500,5000,10000,20000,40000,60000], label: "Target Goal" %>
+        <%= f.select :period, ["24-Hours", "Month"], label: "Period" %>
+        <%= f.text_field :company, hide_label: true, class: "hidden" %>
+        <%= f.submit "Update", class: "btn btn-default btn-block"%>
+      </p>
+    </div>
+  </div>
+<% end %>  

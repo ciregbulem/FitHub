@@ -2,10 +2,8 @@
 <html>
 <head>
   <title><%= @user.fname %> <%= @user.lname %></title>
-  <link rel="stylesheet" type="text/css" href="jquery.mmenu.css">
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.js"></script>
   <link rel="stylesheet" type="text/css" href="/app/assets/stylesheets/sidebar.css">
-  <link rel="stylesheet" type="text/css" href="/app/assets/hook/hook.css">
 </head>
   <body>
   <div class="container-fluid">
@@ -16,19 +14,22 @@
       <div id="flash">
         <% if flash.alert %>
             <h6 class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <%= flash.alert %>
             </h6>
         <% end %>
       </div>
       <div id="notice">
         <% if flash.notice %>
-                <h6 class="alert alert-success alert-dismissible" role="alert">
-                    <%= flash.notice %>
-                </h6>
+            <h6 class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <%= flash.notice %>
+            </h6>
         <% end %>
       </div>
     </div>
     <% end %>
+
     <div class="container">
     <br>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -41,12 +42,12 @@
             
             <!-- Profile Picture -->
             <a type="button" data-toggle="modal" data-target="#myModal" class="btn">
-              <% if @user.fitbit_image != nil %>
-                <%= image_tag @user.fitbit_image, size: "225", class: "img img-thumbnail img-circle profile-pic img-responsive" %>
-              <% elsif @user.avatar_file_name != nil %>
+              <% if @user.avatar_file_name %>
                 <%= image_tag @user.avatar.url(:medium), size: "225", class: "img img-thumbnail img-circle profile-pic" %>
-              <% elsif @user.image != nil %>
+              <% elsif @user.image %>
                 <%= image_tag @user.image, size: "225", class: "img img-thumbnail img-circle profile-pic" %>
+              <% elsif @user.fitbit_image %>
+                <%= image_tag @user.fitbit_image, size: "225", class: "img img-thumbnail img-circle profile-pic img-responsive" %>
               <% else %>
                 <%= image_tag "https://s3-us-west-1.amazonaws.com/fithub-development/no-user-image-square.jpg", size: "225", class: "img img-thumbnail img-responsive img-circle profile-pic" %>
               <% end %>
@@ -59,7 +60,10 @@
                 <!-- Social Buttons -->
                 <% if @user.fb_link != nil %>
                   <%= link_to @user.fb_link, class: "btn" do %>
-                    <i class="fa fa-facebook-official fa-2x" style="color: #000000;"></i> <!--Facebook-->
+                    <span class="fa-stack fa-lg">
+                      <i class="fa fa-circle fa-stack-2x" style="color: #3b5998;"></i>
+                      <i class="fa fa-facebook fa-stack-1x fa-inverse"></i> <!--Facebook-->
+                    </span>
                   <% end %>
                 <% else %>
                 <% end %>
@@ -89,17 +93,25 @@
             <br>
             <br>
             <br>
-            <% if @user.about %>
+            <!--<% if @user.about %>
               <blockquote>
                 <p class="lead">
-                  <%= @user.about%>
+                  <%= @user.about %>
                 </p>
               </blockquote>
+            <% end %>-->
+            <br>
+            <br>
+            <br>
+            <br>
+            <% if admin_signed_in? %>
+              <div class="pull-right" id="add-to-roster">
+                <%= bootstrap_form_for @user do |f| %>
+                  <%= f.text_field :admin_id, value: current_admin.id, class: "hidden", hide_label: true  %>
+                  <%= f.submit "Add To Roster", class: "btn btn-default" %>
+                <% end %>
+              </div>
             <% end %>
-            <br>
-            <br>
-            <br>
-            <br>
           </div>
         </div><!-- .row -->
         <br> 
@@ -122,14 +134,17 @@
                 <%= link_to refresh_path, class: 'btn btn-default' do %>
                   <i class="fa fa-refresh fa-2x"></i>
                 <% end %>
-                <a id="today-btn" href="#today" role="pill" aria-controls="overview" data-toggle="pill" class="btn btn-default active">Today</a>
-                <a id="week-btn" href="#week" role="pill" aria-controls="info" data-toggle="pill" class="btn btn-default disabled">Week</a>
-                <a id="month-btn" href="#month" role="pill" aria-controls="data" data-toggle="pill" class="btn btn-default disabled">Month</a>
+                <a id="today-btn" href="#today" role="pill" aria-controls="overview" data-toggle="pill" class="btn btn-default active" onclick="swapActiveButton('today-btn');">Today</a>
+                <a id="month-btn" href="#month" role="pill" aria-controls="data" data-toggle="pill" class="btn btn-default" onclick="swapActiveButton('month-btn');">Month</a>
+                <!--<a id="bonus-btn" href="#bonus" role="pill" aria-controls="info" data-toggle="pill" class="btn btn-default" onclick="swapActiveButton('bonus-btn');">Bonus</a>-->
               </div>
             </div>
           <br>
+          <!-- Daily Panel -->
+          <!-- Todays Cals -->
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="tab-content">
+            <% if @user.fitbit_id %>
               <div role="pillpanel" class="tab-pane fade in active" id="today">
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                  <div class="panel">
@@ -138,13 +153,14 @@
                       <center><i class="glyphicon glyphicon-fire fa-5x text-warning"></i></center>
                       <h3 class="text-center"><%= @todays_cals_float.to_i %> calories</h3>
                       <div class="progress">
-                        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfCals %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfCals %>">
-                        <span><%= @percentOfCals %></span>
+                        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfCals %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfTodaysCals %>">
+                        <span><%= @percentOfTodaysCals %></span>
                         </div>
                       </div>
                    </div>
                  </div>
                 </div>
+                <!-- Todays Steps -->
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">               
                  <div class="panel">
                    <div class="panel-heading"></div>
@@ -152,36 +168,38 @@
                     <center><i class="fa fa-heartbeat fa-5x text-success"></i></center>
                     <h3 class="text-center"><%= @todays_steps_float.to_i %> steps</h3>
                     <div class="progress">
-                      <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfSteps %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfSteps %>">
-                        <span><%= @percentOfSteps %></span>
+                      <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfSteps %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfTodaysSteps %>">
+                        <span><%= @percentOfTodaysSteps %></span>
                       </div>
                     </div>
                    </div>
                  </div>
                 </div>
+                <!-- Todays Dist -->
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
                       <center><i class="fa fa-bicycle fa-5x text-danger"></i></center>
-                      <h3 class="text-center"><%= @todays_dist_float.to_i.round(2) %> miles</h3>
+                      <h3 class="text-center"><%= @todays_dist_float.round(2) %> miles</h3>
                       <div class="progress">
-                        <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfDist %>">
-                          <span><%= @percentOfDist %></span>
+                        <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfTodaysDist %>">
+                          <span><%= @percentOfTodaysDist %></span>
                         </div>
                       </div>
                    </div>
                  </div>
                 </div>
+                <!-- Todays Sleep -->
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
                       <center><i class="fa fa-bed fa-5x text-info"></i></center>
-                      <h3 class="text-center"><%= @percentOfSleep %> sleep</h3>
+                      <h3 class="text-center"><%= @percentOfTodaysSleep %> sleep</h3>
                       <div class="progress">
-                        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> - '%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfSleep %>">
-                          <span class=""><%= @percentOfSleep %></span>
+                        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> - '%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfTodaysSleep %>">
+                          <span class=""><%= @percentOfTodaysSleep %></span>
                         </div>
                       </div>
                    </div>
@@ -189,67 +207,8 @@
                 </div>
               </div>
 
-              <!-- Weekly Panel -->
-              <div role="pillpanel" class="tab-pane fade" id="week">
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                 <div class="panel">
-                   <div class="panel-heading"></div>
-                    <div class="panel-body">
-                      <center><i class="glyphicon glyphicon-fire fa-5x text-warning"></i></center>
-                      <h3 class="text-center">Calories</h3>
-                      <div class="progress">
-                        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfCals %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfCals %>">
-                        <span><%= @percentOfCals %></span>
-                        </div>
-                      </div>
-                   </div>
-                 </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">               
-                 <div class="panel">
-                   <div class="panel-heading"></div>
-                   <div class="panel-body">
-                    <center><i class="fa fa-heartbeat fa-5x text-success"></i></center>
-                    <h3 class="text-center">Steps</h3>
-                    <div class="progress">
-                      <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfSteps %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfSteps %>">
-                        <span><%= @percentOfSteps %></span>
-                      </div>
-                    </div>
-                   </div>
-                 </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                 <div class="panel">
-                   <div class="panel-heading"></div>
-                    <div class="panel-body">
-                      <center><i class="fa fa-bicycle fa-5x text-danger"></i></center>
-                      <h3 class="text-center">Miles</h3>
-                      <div class="progress">
-                        <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfDist %>">
-                          <span><%= @percentOfDist %></span>
-                        </div>
-                      </div>
-                   </div>
-                 </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-                 <div class="panel">
-                   <div class="panel-heading"></div>
-                    <div class="panel-body">
-                      <center><i class="fa fa-bed fa-5x text-info"></i></center>
-                      <h3 class="text-center">Sleep</h3>
-                      <div class="progress">
-                        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> - '%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfSleep %>">
-                          <span class=""><%= @percentOfSleep %></span>
-                        </div>
-                      </div>
-                   </div>
-                 </div>
-                </div>
-              </div> <!-- Weekly Panel END -->
-
               <!-- Monthly Panel -->
+              <!-- Months Cals -->
               <div role="pillpanel" class="tab-pane fade" id="month">
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                  <div class="panel">
@@ -265,12 +224,13 @@
                    </div>
                  </div>
                 </div>
+                <!-- Months Steps -->
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">               
                  <div class="panel">
                    <div class="panel-heading"></div>
                    <div class="panel-body">
                     <center><i class="fa fa-heartbeat fa-5x text-success"></i></center>
-                    <h3 class="text-center">Steps</h3>
+                    <h3 class="text-center"><%= @months_steps_float.to_i %> steps</h3>
                     <div class="progress">
                       <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfMonthsSteps %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfMonthsSteps %>">
                         <span><%= @percentOfMonthsSteps %></span>
@@ -279,12 +239,13 @@
                    </div>
                  </div>
                 </div>
+                <!-- Months Dist -->
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
                       <center><i class="fa fa-bicycle fa-5x text-danger"></i></center>
-                      <h3 class="text-center">Miles</h3>
+                      <h3 class="text-center"><%= @months_dist_float.to_f.round(2) %> miles</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfMonthsDist %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfMonthsDist %>">
                           <span><%= @percentOfMonthsDist %></span>
@@ -293,12 +254,13 @@
                    </div>
                  </div>
                 </div>
+                <!-- Months Sleep -->
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
                  <div class="panel">
                    <div class="panel-heading"></div>
                     <div class="panel-body">
                       <center><i class="fa fa-bed fa-5x text-info"></i></center>
-                      <h3 class="text-center">Sleep</h3>
+                      <h3 class="text-center"><%= @percentOfMonthsSleep %> sleep</h3>
                       <div class="progress">
                         <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfMonthsSleep %> - '%'" aria-valuemin="0" aria-valuemax="100" style="width: <%= @percentOfMonthsSleep %>">
                           <span class=""><%= @percentOfMonthsSleep %></span>
@@ -307,20 +269,87 @@
                    </div>
                  </div>
                 </div>
-              </div>
-            </div>
-          </div> <!-- Monthly Panel END -->
-          <br>
+              </div><!-- Monthly Panel END -->
 
-        </div><!-- /.container -->
-        </div><!-- /.container-fluid -->
+              <!-- Bonus Panel -->
+              <!-- Weeks Cals 
+              <div role="pillpanel" class="tab-pane fade" id="bonus">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                 <div class="panel">
+                   <div class="panel-heading"></div>
+                    <div class="panel-body">
+                      <center><i class="glyphicon glyphicon-fire fa-5x text-warning"></i></center>
+                      <h3 class="text-center">Bonus #1</h3>
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfCals %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                        <span>50%</span>
+                        </div>
+                      </div>
+                   </div>
+                 </div>
+                </div>
+                <!-- Weeks Steps 
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">               
+                 <div class="panel">
+                   <div class="panel-heading"></div>
+                   <div class="panel-body">
+                    <center><i class="fa fa-heartbeat fa-5x text-success"></i></center>
+                    <h3 class="text-center">Bonus #2</h3>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfSteps %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                        <span>50%</span>
+                      </div>
+                    </div>
+                   </div>
+                 </div>
+                </div>
+                <!-- Weeks Dist 
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                 <div class="panel">
+                   <div class="panel-heading"></div>
+                    <div class="panel-body">
+                      <center><i class="fa fa-bicycle fa-5x text-danger"></i></center>
+                      <h3 class="text-center">Bonus #3</h3>
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> -'%'" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                          <span>50%</span>
+                        </div>
+                      </div>
+                   </div>
+                 </div>
+                </div>
+                <!-- Weeks Sleep 
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                 <div class="panel">
+                   <div class="panel-heading"></div>
+                    <div class="panel-body">
+                      <center><i class="fa fa-bed fa-5x text-info"></i></center>
+                      <h3 class="text-center">Bonus #4</h3>
+                      <div class="progress">
+                        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<%= @percentOfDist %> - '%'" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                          <span class="">50%</span>
+                        </div>
+                      </div>
+                   </div>
+                 </div>
+                </div>
+              </div> <!-- Weekly Panel END -->
+            <% end %>
+            </div>
+          </div>
+
+          
+
+          <br>
+          </div><!-- /.container -->
+  </div><!-- /.container-fluid -->
 
      <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h3><%= @user.fname %> <%= @user.lname %></h3>
+            <h3 class="text-capitalize"><%= @user.fname %> <%= @user.lname %></h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fa fa-close fa-2x"></i></button>
           </div>
           <div class="modal-body">
@@ -341,80 +370,44 @@
     </div>
     <!--Modal End -->
 
-    <% javascript_include_tag "/hook/mousewheel.js" %>
-    <% javascript_include_tag "/hook/hook.js" %>
-
     <script type="text/javascript">
       $('[data-toggle=dropdown]').dropdown()
-      $(document).ready(function(){
-        setTimeout(function(){
-          $('#flash').remove();
-        }, 5000);
-       })
+    </script>
 
-      $(document).ready(function(){
-        setTimeout(function(){
-          $('#notice').remove();
-        }, 5000);
-       })
-    </script><!-- Flash Toggle & Alert Toggle -->
-
-    <script type="text/javascript">
-      $('#hook').hook();
-    </script>
-    <script type="text/javascript" src="jquery.mmenu.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function() {
-        $('#my-menu').mmenu();
-      });
-    </script>
-    <script type="text/javascript">
-      $(document).ready(function() {
-        $('[data-toggle=offcanvas]').click(function() {
-          $('.row-offcanvas').toggleClass('active');
-        });
-      });
-    </script>
     <script type="text/javascript">
       function htmlbodyHeightUpdate(){
-    var height3 = $( window ).height()
-    var height1 = $('.nav').height()+50
-    height2 = $('.main').height()
-    if(height2 > height3){
-      $('html').height(Math.max(height1,height3,height2)+10);
-      $('body').height(Math.max(height1,height3,height2)+10);
-    }
-    else
-    {
-      $('html').height(Math.max(height1,height3,height2));
-      $('body').height(Math.max(height1,height3,height2));
-    }
-    
-  }
-  $(document).ready(function () {
-    htmlbodyHeightUpdate()
-    $( window ).resize(function() {
-      htmlbodyHeightUpdate()
-    });
-    $( window ).scroll(function() {
+      var height3 = $( window ).height()
+      var height1 = $('.nav').height()+50
       height2 = $('.main').height()
+      if(height2 > height3){
+        $('html').height(Math.max(height1,height3,height2)+10);
+        $('body').height(Math.max(height1,height3,height2)+10);
+      }
+      else
+      {
+        $('html').height(Math.max(height1,height3,height2));
+        $('body').height(Math.max(height1,height3,height2));
+      }
+      
+    }
+    $(document).ready(function () {
+      htmlbodyHeightUpdate()
+      $( window ).resize(function() {
         htmlbodyHeightUpdate()
+      });
+      $( window ).scroll(function() {
+        height2 = $('.main').height()
+          htmlbodyHeightUpdate()
+      });
     });
-  });
     </script>
     <script type="text/javascript">
-      // Attempting to load JSON fitness data with JS
-      $.('#refresh-btn').click(
-        $.ajax({
-          method: "GET",
-          url: "https://api.fitbit.com/1/2WDL4V/activities/calories/today/1d.json",
-          async: false,
-          dataType: "json",
-          success: function(data){
-            alert(data);
-          };
-        });
-      );
+      function swapActiveButton (buttonId){
+        $('#today-btn').removeClass("active");
+        $('#month-btn').removeClass("active");
+        $('#bonus-btn').removeClass("active");
+        $('#'+buttonId).addClass("active");  
+      }
     </script>
   </body>
 </html>

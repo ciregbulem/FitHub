@@ -3,35 +3,59 @@
 <head>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  
   <%= csrf_meta_tags %>
   <link href="/app/assets/stylesheets/lumen.bootstrap.css" rel="stylesheet">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="/app/assets/stylesheets/special-page.css">
+  <link rel="icon" type="image/png" href="http://i.imgur.com/KTY2RnU.png">
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse">
-	    <div class="navbar-header">
+	    <div class="navbar-header" style="padding-top: 8px; padding-bottom: 30px;">
 	      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-inverse-collapse">
 	        <span class="fa fa-navicon fa-2x"></span>
 	      </button>
-	      <% if admin_signed_in? || admin_signed_in? %>
 	        <%= link_to root_path, class: "navbar-brand" do %>
-	          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo_2.png", height: '49.7', width: '100') %>
+	          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo_2.png", height: '50', width: '100') %>
 	        <% end %>
-	      <% else %>
-	        <%= link_to root_path, class: "navbar-brand" do %>
-	          <% image_tag("https://s3-us-west-1.amazonaws.com/fithub-development/fithub_logo_2.png", height: '38.22', width: '76.92') %>
-	        <% end %>
-	      <% end %>
 	    </div>
 	    <div class="navbar-collapse collapse" id="navbar-inverse-collapse">
 
-	      <ul class="nav navbar-nav navbar-right">
-	        <% if admin_signed_in? != true %>
+	      <ul class="nav navbar-nav navbar-right" style="padding-top: 10px;">
+          	<% if admin_signed_in? %>
+	          <li>
+	            <%= link_to current_admin do %>
+	          		<% if current_admin.avatar_file_name != nil %>
+	                  <%= image_tag current_admin.avatar.url(:thumb), size: "40", class: " img img-circle" %>
+	                <% else %>
+	                  <img src="https://s3-us-west-1.amazonaws.com/fithub-development/no-user-image-square.jpg" alt="No Avatar Exists" class="img img-rounded" width="32" height="32">
+	                <% end %>
+	                <%= current_admin.fname %>
+	          	<% end %>
+	          </li>
+	        
+	          <li class="dropdown hidden-xs">
+	            <a href="#" class="dropdown-toggle btn btn-lg" type="button" id="dropdownMenu2" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog fa-3x"></span></a>
+	            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+	              <li role="presentation" class="dropdown-header">Profile</li>
+	              <li role="presentation"><%= link_to edit_admin_registration_path do %><i class="fa fa-edit"></i> Edit<% end %></li>
+	              <li class="divider"></li>
+	              <li role="presentation" class="dropdown-header">Bonus</li>
+              	  <li role="presentation"><%= link_to new_reward_path do %><i class="fa fa-plus"></i> Add Bonus<% end %></li>
+              	  <li role="presentation"><%= link_to rewards_path do %><i class="fa fa-edit"></i> Edit Bonuses<% end %></li>
+              	  <li role="presentation"><%= link_to rewards_path do %><i class="fa fa-check"></i> View Bonuses<% end %></li>
+              	  <li class="divider"></li>
+              	  <li role="presentation"><%= link_to destroy_admin_session_path, method: :delete do %><i class="fa fa-lock"></i> Sign Out<% end %></li>
+	            </ul>
+	          </li>
+	        <% else %>
 	          <li>
 	            <%= link_to new_admin_session_path do %>
-	              <i class="fa fa-sign-in"></i> Login
+	              <i class="fa fa-sign-in"></i> Log In
 	            <% end %>   
 	          </li>
 	          <li>
@@ -39,75 +63,10 @@
 	                  <i class="fa fa-check"></i> Sign Up
 	              <% end %>
 	          </li>
-	        <% else %>
-	          <li>
-	            <%= link_to current_admin do %>
-              		<% #if current_admin.avatar_file_name != nil %>
-	                  <%= #image_tag current_admin.avatar.url(:thumb), size: "40", class: " img img-circle" %>
-	                <% elsif #current_admin.image != nil %>
-	                  <%= #image_tag current_admin.image, size: "40", class: " img img-circle" %>
-	                <% else %>
-	                  <img src="https://s3-us-west-1.amazonaws.com/fithub-development/no-user-image-square.jpg" alt="No Avatar Exists" class="img img-rounded" width="32" height="32">
-	                <% end %>
-	                <%= current_admin.fname %>
-	              <% end %>
-	          </li>
-	        <% end %>
-	        <% if admin_signed_in? %>
-	          <li class="dropdown hidden-xs">
-	            <a href="#" class="dropdown-toggle btn btn-lg" type="button" id="dropdownMenu2" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog fa-3x"></span></a>
-	            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
-	              <li role="presentation" class="dropdown-header">Profile</li>
-	              <li role="presentation"><%= link_to "Edit", edit_admin_registration_path %></li>
-	              <li role="presentation"><%= link_to "Sign Out", destroy_admin_session_path, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-	            </ul>
-	          </li>
 	        <% end %>
 	      </ul>
 	    </div>
-	  </div>
   	</div>
-    <!--<% if flash.alert || flash.notice %>
-    
-    <div class="container">
-        <div class="row">
-            <div id="flash">
-              <% if flash.alert %>
-                  <h6 class="alert alert-danger alert-dismissible" role="alert">
-                      <%= flash.alert %>
-                  </h6>
-              <% end %>
-            </div>
-            <div id="notice">
-              <% if flash.notice %>
-                      <h6 class="alert alert-success alert-dismissible" role="alert">
-                          <%= flash.notice %>
-                      </h6>
-              <% end %>
-            </div>
-        </div>
-    </div>
-    <% end %> Started adding flash only to pages where they're needed -->
 	<%= yield %>
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
-    <!-- Flash Toggle & Alert Toggle -->
-    <script type="text/javascript">
-      $('[data-toggle=dropdown]').dropdown()
-      $(document).ready(function(){
-        setTimeout(function(){
-          $('#flash').remove();
-        }, 6000);
-       })
-
-      $(document).ready(function(){
-        setTimeout(function(){
-          $('#notice').remove();
-        }, 6000);
-       })
-    </script><!-- Flash Toggle & Alert Toggle -->
 </body>
 </html>

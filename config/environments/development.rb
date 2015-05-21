@@ -40,20 +40,20 @@ Rails.application.configure do
   
     
   # For Devise:
-    config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   # For Paperclip:
   Paperclip.options[:command_path] = "/usr/local/bin/"
 
-    # Paperclip w/ S3
-    config.paperclip_defaults = {
-    :storage => :s3,
-    #:s3_host_name => 'REMOVE_THIS_LINE_IF_UNNECESSARY',
-    :s3_credentials => {
-      :bucket => "fithub-development",
-      :access_key_id => ENV['AWS_access_key_id'],
-      :secret_access_key => ENV['AWS_secret_access_key']
-    }
+  # Paperclip w/ S3
+  config.paperclip_defaults = {
+  :storage => :s3,
+  #:s3_host_name => 'REMOVE_THIS_LINE_IF_UNNECESSARY',
+  :s3_credentials => {
+    :bucket => "fithub-development",
+    :access_key_id => ENV['AWS_access_key_id'],
+    :secret_access_key => ENV['AWS_secret_access_key']
+  }
 }
 
 end

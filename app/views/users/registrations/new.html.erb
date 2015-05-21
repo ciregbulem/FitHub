@@ -4,15 +4,14 @@
   <title>Sign Up</title>
 </head>
 <body>
-  <div class="panel panel-default">
-    <div class="panel-heading"><h3>Sign Up</h3></div>
+  <div class="panel">
     <div class="panel-body">
       <br>
       <div class="col-sm-4 col-md-4 col-lg-4">
         <%= bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
         <%= devise_error_messages! %>
         <div class="row text-center">
-          <img src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" alt="No Avatar Exists" class="img img-rounded img-responsive img-thumbnail" width="227" height="227">
+          <img id="user-photo" src="http://www.faithlineprotestants.org/wp-content/uploads/2010/12/facebook-default-no-profile-pic.jpg" alt="No Avatar Exists" class="img img-rounded img-responsive img-thumbnail" width="227" height="227">
         </div>
         <div class="row">
           <div class="page-header">
@@ -26,36 +25,42 @@
       </div>
 
       <div class="col-sm-8 col-md-8 col-lg-8">
-        <%= f.text_field :fname, autofocus: true, placeholder: "First Name", label: "First Name" %>
-        <%= f.text_field :lname, placeholder: "Last Name", label: "Last Name" %>
+        <%= f.text_field :fname, autofocus: true, placeholder: "First Name", label: "First Name", id: "user-fname", class: "input-lg text-capitalize" %>
+        <%= f.text_field :lname, placeholder: "Last Name", label: "Last Name", id: "user-lname", class: "input-lg text-capitalize" %>
         
-        <%= f.email_field :email, placeholder: "Enter Email", icon: "envelope" %>
+        <%= f.email_field :email, placeholder: "Enter Email", icon: "envelope", id: "user-email", class: "input-lg" %>
 
-        <div class="field">
           <% if @validatable %>
           <% end %>
-          <%= f.password_field :password, autocomplete: "off", placeholder: "Enter New Password", help: "(8 characters minimum)", icon: "lock" %>
-        </div>
+          <%= f.password_field :password, autocomplete: "off", placeholder: "Enter New Password", help: "(8 characters minimum)", icon: "lock", id: "user-password", class: "input-lg" %>
 
-        <div class="field">
-          <%= f.password_field :password_confirmation, label: "Password Confirmation", autocomplete: "off", placeholder: "Confirm Password" %>
-        </div>
+          <%= f.password_field :password_confirmation, label: "Password Confirmation", autocomplete: "off", placeholder: "Confirm Password", id: "user-confirm", class: "input-lg" %>
 
-        <div class="actions">
-          <%= f.submit "Sign Up", class: "btn btn-success" %>
-        </div>
+          <%= f.text_field :image, id: "user-photo-field", hide_label: true, class: "hidden-xs hidden-sm hidden-md hidden-lg" %>
+
+          <%= f.primary "Sign Up" %>
+          <a class="btn btn-warning" id="random" onclick="randomize();"><i class="fa fa-user"></i> Random User</a>
       </div>
     <% end %>
   </div>
  </div>
  <script type="text/javascript">
-   $.ajax({
-    url: 'http://api.randomuser.me/',
-    dataType: 'json',
-    success: function(data){
-      console.log(data);
-    }
-  });
+   function randomize()
+   {
+    $.ajax({
+      url: 'http://api.randomuser.me/',
+      dataType: 'json',
+      success: function(data){
+        $('#user-photo').attr('src', data.results[0].user.picture.large);
+        $('#user-fname').val(data.results[0].user.name.first);
+        $('#user-lname').val(data.results[0].user.name.last);
+        $('#user-email').val(data.results[0].user.email);
+        $('#user-password').val(data.results[0].user.password);
+        $('#user-confirm').val(data.results[0].user.password);
+        $('#user-photo-field').val(data.results[0].user.picture.large);
+      }
+    });
+   }
  </script>
 </body>
 </html> 

@@ -15,8 +15,11 @@ Rails.application.routes.draw do
       }
   resources :users
   resources :admins
+  resources :rewards
+  
   match '/users/:id/finish_signup' => 'users#finish_signup', via: [:get, :patch], :as => :finish_signup
   match '/users/:id/' => 'users#refresh', via: [:patch], :as => :refresh
+  put '/users/addToRoster' => 'users#add_user_to_roster'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
