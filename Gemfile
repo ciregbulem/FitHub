@@ -1,13 +1,13 @@
 
 source 'https://rubygems.org'
 
-gem 'nokogiri'
-gem 'rack', '~>1.1'
-gem 'rspec'
+#gem 'nokogiri'
+#gem 'rack', '~>1.1'
+#gem 'rspec'
 gem 'bootstrap_form'
 gem 'will_paginate', '~> 3.0.6'
 gem 'will_paginate-bootstrap'
-gem 'rails_12factor'
+gem 'rails_12factor', group: :production
 gem 'devise'
 gem 'omniauth', '~> 1.2.2'
 gem 'omniauth-facebook'
@@ -17,6 +17,8 @@ gem "paperclip", "~> 4.2"
 gem 'aws-sdk'
 gem 'figaro'
 gem 'high_voltage', '~> 2.2.1'
+gem 'rails_serve_static_assets'
+gem 'rails_stdout_logging'
 ruby '2.0.0'
 
 # Use PostgreSQL as the database for Active Record
@@ -32,7 +34,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'therubyracer',  platforms: :ruby
+# gem 'therubyracer',  platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -54,8 +56,6 @@ gem 'spring',        group: :development
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
-gem 'execjs'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
