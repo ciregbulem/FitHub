@@ -1,0 +1,41 @@
+<html>
+  <head>
+  	<title><%= @reward.title %></title>
+  </head>
+  <body>
+      <div class="container">
+      <br>
+        <div class="row">
+	  
+        <!-- Edit Form -->
+	    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+          <div class="panel panel-default">
+	          <div class="panel-heading"><h4><i class="fa fa-edit fa-1x"> Edit Bonus</h4></i></div>
+	          <div class="panel-body"> 
+		      	<%= render 'update_form' %>
+		      </div>
+	      </div>
+    	</div>
+	    
+	    <!-- Sidebar -->
+	    <div class="container-fluid">
+	      <div class="row">
+	      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+		      <div class="panel panel-default">
+	          	<div class="panel-heading">
+	          		<h4>
+	          			<i class="fa fa-edit fa-1x"></i> 
+	          			Delete Bonus
+	          		</h4>
+          		</div>
+		        <div class="panel-body">
+					<%= link_to 'Delete', reward_path(@reward), :class => "btn btn-sm btn-danger", method: :delete, data: { confirm: 'Are you sure?' } %>
+				</div>
+		      </div>
+	    </div>
+	    </div>
+        </div>
+      </div>
+  	</h4>
+  </body>
+</html>

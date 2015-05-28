@@ -13,11 +13,8 @@ class User < ActiveRecord::Base
   store_accessor :info, :location, :bio, :about, :gender, :birthday, :name, :link
 
   # For Paperclip
-  has_attached_file :avatar, :styles => { :medium => "356x356#", :thumb => "32x32#" }, :default_url => "/images/:style/missing.png", :url => ":s3_domain_url", :path => "/:class/:attachment/:id_partition/:style/:filename"
+  has_attached_file :avatar, :styles => { :medium => "356x356#", :thumb => "32x32#" }, :default_url => "/images/:style/missing.jpg", :url => ":s3_domain_url", :path => "/:class/:attachment/:id_partition/:style/:filename"
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
-
-  # For Papercrop
-  crop_attached_file :avatar
 
   def self.find_for_oauth(auth, signed_in_resource = nil)
 
@@ -36,18 +33,15 @@ class User < ActiveRecord::Base
       :secret => auth['credentials']['secret'],
       :user_id => auth.uid
     )
-    #user.todays_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-calories"][0]['value']
-    #user.todays_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-steps"][0]['value']
-    #user.todays_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-distance"][0]['value']
-    #user.todays_sleep = @client.data_by_time_range('/sleep/efficiency', :base_date => @client.format_date('today'), :period => '1d')['sleep-efficiency'][0]['value']
-    #user.save
     
+    # If user attempts to sign in or sign up with Fitbit credentials
     if user.nil? && auth.provider == 'fitbit'
         email_is_verified = auth.info.email && (auth.info.verified || auth.info.verified_email)
         email = auth.info.email if email_is_verified
         user = User.find_by email: auth.info.email
 
       if user.nil?
+        # Creates new user if Fitbit identity is not found in identity table
         user = User.new(
           fname: auth.info.first_name,
           lname: auth.info.last_name,
@@ -64,6 +58,7 @@ class User < ActiveRecord::Base
         user.skip_confirmation! if user.respond_to?(:skip_confirmation)
         user.save!
 
+          # Creates Fitgem client for new user
           @client = Fitgem::Client.new(
           :consumer_key => ENV["fitbit_app_key"],
           :consumer_secret => ENV["fitbit_app_secret"],
@@ -71,6 +66,7 @@ class User < ActiveRecord::Base
           :secret => user.oauth_secret,
           :user_id => user.fitbit_id
         )
+
         user.fitbit_image = @client.user_info['user']['avatar150']
         user.daily_cals_goal = @client.daily_goals['goals']['caloriesOut']
         user.daily_steps_goal = @client.daily_goals['goals']['steps']
@@ -81,46 +77,48 @@ class User < ActiveRecord::Base
         user.todays_sleep = @client.data_by_time_range('/sleep/efficiency', :base_date => @client.format_date('today'), :period => '1d')['sleep-efficiency'][0]['value']
         user.save
       else
+          # Creates Fitgem client for existing user
           @client = Fitgem::Client.new(
           :consumer_key => ENV["fitbit_app_key"],
           :consumer_secret => ENV["fitbit_app_secret"],
           :token => user.oauth_token,
           :secret => user.oauth_secret,
-          :user_id => user.fitbit_id
         )
+
         user.fitbit_id = auth.uid
         user.fitbit_image = @client.user_info['user']['avatar150']
         user.oauth_token = auth['credentials']['token']
         user.oauth_secret = auth['credentials']['secret']
-        #user.fitbit_image = auth.info.image
+
         user.daily_cals_goal = @client.daily_goals['goals']['caloriesOut']
         user.daily_steps_goal = @client.daily_goals['goals']['steps']
         user.daily_dist_goal = @client.daily_goals['goals']['distance']
-        user.todays_cals = @client.data_by_time_range('/activities/tracker/calories', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-calories"][0]['value']
-        user.todays_steps = @client.data_by_time_range('/activities/tracker/steps', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-steps"][0]['value']
-        user.todays_dist = @client.data_by_time_range('/activities/tracker/distance', :base_date => @client.format_date('today'), :period => '1d')["activities-tracker-distance"][0]['value']
-        user.todays_sleep = @client.data_by_time_range('/sleep/efficiency', :base_date => @client.format_date('today'), :period => '1d')['sleep-efficiency'][0]['value']
-        user.save
+        user.save!
       end
 
       def has_fitbit_data?
         !@client.nil?
       end
 
-      def unit_measurement_mappings
-        @unit_mappings = {
-          :distance => @client.label_for_measurement(:distance),
-          :duration => @client.label_for_measurement(:duration),
-          :elevation => @client.label_for_measurement(:elevation),
-          :height => @client.label_for_measurement(:height),
-          :weight => @client.label_for_measurement(:weight),
-          :measurements => @client.label_for_measurement(:measurements),
-          :liquids => @client.label_for_measurement(:liquids),
-          :blood_glucose => @client.label_for_measurement(:blood_glucose)
-        }
-      end
-    else
+    elsif user.nil? == false && auth.provider == 'fitbit'
+          # Creates Fitgem client for existing user
+          @client = Fitgem::Client.new(
+          :consumer_key => ENV["fitbit_app_key"],
+          :consumer_secret => ENV["fitbit_app_secret"],
+          :token => user.oauth_token,
+          :secret => user.oauth_secret,
+        )
 
+        user.fitbit_id = auth.uid
+        user.oauth_token = auth['credentials']['token']
+        user.oauth_secret = auth['credentials']['secret']
+
+        user.daily_cals_goal = 2500
+        user.daily_steps_goal = 10000
+        user.daily_dist_goal = 5
+        user.save!
+      
+    else
       # Create the user if needed
       if user.nil?
 
@@ -148,13 +146,8 @@ class User < ActiveRecord::Base
           user.skip_confirmation! if user.respond_to?(:skip_confirmation)
           user.save!
         end
-        user.image = auth.info.image
-        if auth.provider == 'facebook'
-          user.fb_link = auth.raw_info.link
-        end
       end
     end
-    user.image = auth.info.image
     if auth.provider == 'facebook'
       user.fb_link = auth.extra.raw_info.link
     end

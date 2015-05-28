@@ -1,12 +1,71 @@
 <html>
+<head>
+	<title>FitHub | Welcome</title>
+</head>
 <body>
-	<div class="container-fluid">
-		<%= link_to new_admin_registration_path do %>
-			<button class="btn btn-success hidden-sm hidden-md hidden-lg">Create Admin Account</button>
-		<% end %>
-		<%= link_to new_admin_session_path do %>
-			<button class="btn btn-warning hidden-sm hidden-md hidden-lg">Admin Login</button>
-		<% end %>
+	<div class="container-fluid" style="background-image: url('http://i.imgur.com/A6p1buk.png');margin-top: 0px;" width="100%">
+		<div class="row">
+			<div class="col-lg-10 col-lg-offset-1" style="padding-top: 10%;padding-bottom: 10%;">
+				<h1 class="text-capitalize text-center" style="color: #FFFFFF;font-size: 45pt;">Earn Back Your Dollars. Live Healthy.</h1>
+				<center><a class="btn btn-default btn-lg smooth-scroll" href="#info">Learn More</a></center>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="row" style="padding-top: 75px; padding-bottom: 50px;" id="info">
+			<div class="col-lg-4">
+				<center><img src="http://i.imgur.com/Q6gNxjv.png" height="35%" width="35%" class="img img-responsive"></center>
+				<h3 class="text-center">EXCERCISE</h3>
+				<p class="text-center lead">
+					Exercise daily and track your progress with any Fitbit device to start earning back your money!
+				</p>
+			</div>
+			<div class="col-lg-4">
+				<center><img src="http://i.imgur.com/3Aw0pWW.png" height="35%" width="35%" class="img img-responsive"></center>
+				<h3 class="text-center">QUALIFY</h3>
+				<p class="text-center lead">
+					Look through the selection of bonus offers from your health insurance provider and do your best to hit each goal!
+				</p>
+			</div>
+			<div class="col-lg-4">
+				<center><img src="http://i.imgur.com/wAvq0zd.png" height="35%" width="35%" class="img img-responsive"></center>
+				<h3 class="text-center">SAVE</h3>
+				<p class="text-center lead">
+					Who doesn't love hard-earned cash? Meet as many goals as you can and get rewarded with sweet bonuses!
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid" style="background-color: #49dda5;">
+		<h1 style="padding: 50px; font-size: 250%;" class="text-center">Save up to <i>$500</i> a month! Get started for <i>FREE</i> today. 
+			<% if user_signed_in? %>
+				<%= link_to user_path(current_user), style: "color: #FFFFFF;" do %>
+					View My Profile <i class="fa fa-arrow-right" style="color: #FFFFFF;"></i>
+				<% end %>
+			<% else %>
+				<a href="/users/sign_up" class="text-warning" style="color: #FFFFFF;">Sign Up <i class="fa fa-arrow-right" style="color: #FFFFFF;"></i></a>
+			<% end %>
+		</h1>
+	</div>
+
+	<div class="container-fluid" style="background-color: #FFFFFF;">
+		<div class="row" style="padding-top: 30px; padding-bottom: 30px;">
+			<div class="col-lg-3 col-lg-offset-1">
+				<img src="http://soboconcepts.com/wp-content/uploads/2015/01/fitbit-logo.png" class="img img-responsive" width="100%" style="padding-top: 5px;">
+			</div>
+			<div class="col-lg-7">
+				<h2 class="text-center" style="padding: 10px;">Fitbit Integration</h2>
+				<p class="text-center lead"style="font-size: 180%;">
+					FitHub allows you to easily connect to our application using your Fitbit account details. Once you login or sign up with your Fitbit account, you are good to go and can start earning savings instantly. All you have to do is make sure you are wearing your Fitbit activity tracker whenever you are exercising!
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid" style="background-color: #383838;">
+		<h4 class="text-center" style="padding: 30px; color: #FFFFFF;">© 2015 FitHub. Developed by <a href="http://ciregbulem.github.io" style="color: #FFFFFF;">Chudi Iregbulem</a></h4>
 	</div>
 </body>
 </html>

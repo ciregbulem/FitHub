@@ -1,36 +1,39 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Login</title>
+    <title>FitHub | Login</title>
   </head>
   <body>
-    <div class="hidden-xs col-sm-4 col-md-4 col-lg-4">
-      <img src="https://s3-us-west-1.amazonaws.com/chudiblog/Site+Imagery/login.png" class="img-responsive img-rounded" alt="No-Image">
-    </div>
-    <div class="col-xs-12 col-sm-offset-1 col-sm-7 col-md-offset-1 col-md-7 col-lg-offset-1 col-lg-7">
-      <h2>Login</h2>
+    <br>
+    <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+      <div class="panel">
+        <div class="panel-body">
+          <h2 class="text-center">Log in to FitHub</h2>
+            <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+              <div class="field has_success">
+                <%= f.email_field :email, autofocus: true %>
+              </div>
 
-      <%= bootstrap_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-        <div class="field has_success">
-          <%= f.email_field :email, autofocus: true %>
+              <div class="field">
+                <%= f.password_field :password, autocomplete: "off" %>
+              </div>
+
+              <% if devise_mapping.rememberable? -%>
+                <div class="field">
+                  <%= f.check_box :remember_me %>
+                </div>
+              <% end -%>
+
+              <div class="actions">
+                <%= f.submit "Log In", class: "btn btn-default btn-lg" %>
+              </div>
+            <% end %>
+            <br>
+          <center>
+            <%= render "users/shared/links" %>
+          </center>
         </div>
-
-        <div class="field">
-          <%= f.password_field :password, autocomplete: "off" %>
-        </div>
-
-        <% if devise_mapping.rememberable? -%>
-          <div class="field">
-            <%= f.check_box :remember_me %>
-          </div>
-        <% end -%>
-
-        <div class="actions">
-          <%= f.primary "Login" %>
-        </div>
-      <% end %>
-      <br>
-      <%= render "users/shared/links" %>
+      </div>
     </div>
   </body>
 </html>

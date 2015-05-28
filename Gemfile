@@ -1,26 +1,24 @@
 
 source 'https://rubygems.org'
 
-gem 'nokogiri'
-gem 'rack', '~>1.1'
-gem 'rspec'
+#gem 'nokogiri'
+#gem 'rack', '~>1.1'
+#gem 'rspec'
 gem 'bootstrap_form'
 gem 'will_paginate', '~> 3.0.6'
 gem 'will_paginate-bootstrap'
-gem 'rails_12factor'
+gem 'rails_12factor', group: :production
 gem 'devise'
 gem 'omniauth', '~> 1.2.2'
 gem 'omniauth-facebook'
 gem 'omniauth-fitbit'
 gem 'fitgem'
 gem "paperclip", "~> 4.2"
-gem "papercrop"
 gem 'aws-sdk'
 gem 'figaro'
-gem 'mmenu-rails'
 gem 'high_voltage', '~> 2.2.1'
-#gem 'bootstrap-growl-rails', '~> 2.0.0'
-gem 'growlyflash', '~> 0.5.0'
+gem 'rails_serve_static_assets'
+gem 'rails_stdout_logging'
 ruby '2.0.0'
 
 # Use PostgreSQL as the database for Active Record

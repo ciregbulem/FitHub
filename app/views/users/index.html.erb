@@ -7,10 +7,10 @@
 				<div class="panel panel-default fixed-top">
 					<div class="panel-body">
 						<center>
-						<% if current_user.fitbit_image != nil %>
-			                <%= image_tag current_user.fitbit_image, size: "240", class: "img img-thumbnail img-rounded img-responsive" %>
-						<% elsif current_user.avatar_file_name != nil %>
-							<%= image_tag current_user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-rounded", size: "240"%>
+						<% if current_user.avatar_file_name %>
+			                <%= image_tag current_user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-rounded", size: "240"%>
+						<% elsif current_user.fitbit_image %>
+							<%= image_tag current_user.fitbit_image, size: "240", class: "img img-thumbnail img-rounded img-responsive" %>
 						<% elsif current_user.image != nil %>	
 							<%= image_tag current_user.image, class: "img img-responsive img-thumbnail img-rounded", size: "200" %>
 						<% else %>
@@ -26,17 +26,9 @@
 			</div>
 		<% end %>
 			<div class="hidden-md hidden-lg col-xs-1 col-sm-1"></div>
-			<div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
+			<div class="col-xs-8 col-sm-8 col-md-9 col-lg-10 col-lg-offset-1">
 				<div class="panel panel-default">
 					<div class="panel-body">
-					<form class="form" role="search">
-					<div class="col-sm-11">	
-						<div class="form-group">
-							<input type="text" class="form-control" placeholder="Search for Client...">
-						</div>
-					</div>
-					<button class="btn btn-primary"><i class="fa fa-search"></i></button>
-					</form>
 						<table class="table"> 
 							<% @users.each do |user| %>
 										<tr>
@@ -44,10 +36,10 @@
 													<div class="row">
 													<div class="col-xs-10 col-sm-10 col-md-4 col-lg-4 text-center">
 														<%= link_to user_path(user), class: "btn" do %>
-															<% if user.fitbit_image != nil %>
-                												<%= image_tag user.fitbit_image, size: "175", class: "img img-responsive img-thumbnail img-rounded" %>
-															<% elsif user.avatar_file_name != nil %>
-																<%= image_tag user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-rounded", size: "175"%>
+															<% if user.avatar_file_name %>
+                												<%= image_tag user.avatar.url(:medium), class: "img img-responsive img-thumbnail img-rounded", size: "175"%>
+															<% elsif user.fitbit_image %>
+																<%= image_tag user.fitbit_image, size: "175", class: "img img-responsive img-thumbnail img-rounded" %>
 															<% elsif user.image != nil %>	
 																<%= image_tag user.image, class: "img img-responsive img-thumbnail img-rounded", size: "175" %>
 															<% else %>

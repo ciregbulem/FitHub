@@ -1,0 +1,68 @@
+<html>
+	<head>
+		  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+		  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+		  <%= javascript_include_tag :defaults %>
+		  <%= csrf_meta_tags %>
+		  <link href="/assets/stylesheets/css/yeti2-bootstrap.css" rel="stylesheet">
+		  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+		<title>FitHub | Bonuses</title>
+	</head>
+	<body>
+		<div class="container">
+		<br>
+			<div class="container">
+			<div class="well well-lg">
+				<h1 class="text-center">Available Bonuses 
+				<% if admin_signed_in? %>
+					<a href="/rewards/new" class="btn btn-default btn-lg"><i class="fa fa-plus" style="padding-right: 5px;"></i> Add New Bonus</a>
+				<% end %>
+				</h1>
+
+					<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<br>
+						<br>
+						
+							<% @rewards.each do |reward| %>
+								<div class="col-md-6 col-lg-4">
+									<% if reward.target_unit == "Calories" %>
+										<div class="panel panel-warning">
+									<% elsif reward.target_unit == "Steps" %>
+										<div class="panel panel-success">
+									<% else %>
+										<div class="panel panel-danger">
+									<% end %>
+									
+									<div class="panel-heading text-center" style="color: #000000">
+									<h3 style="color: #F7F7F7;">
+										<% if reward.target_unit == "Calories" %>
+											<i class="glyphicon glyphicon-fire"></i>
+										<% elsif reward.target_unit == "Steps" %>
+											<i class="fa fa-heartbeat"></i>
+										<% else %>
+											<i class="fa fa-bicycle"></i>
+										<% end %>
+										<%= reward.title %>
+									</h3>
+									</div>
+										<div class="panel-body">							
+											<center>
+												<h4 style="color: #000000; text-decoration: none;">Units: <%= reward.target_unit %></h4>
+												<h4 style="color: #000000; text-decoration: none;">Goal: <%= number_with_delimiter(reward.goal, :delimeter => ',') %> <%= reward.target_unit %></h4>
+												<h4 style="color: #000000; text-decoration: none;">Period: <%= reward.period %></h4>
+											</center>
+											<br>
+											<%= link_to "View Bonus", reward_path(reward), class: "btn btn-default btn-block" %>
+										</div>
+									</div>
+								</div>
+							<% end %>
+						</div>
+					</div>
+				<%= will_paginate @rewards, renderer: BootstrapPagination::Rails %>
+			</div>
+			</div>	
+		</div>
+	</body>
+</html>

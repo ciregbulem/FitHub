@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  target_unit: MyString
+  goal: 1
+  period: MyString
+
+two:
+  title: MyString
+  target_unit: MyString
+  goal: 1
+  period: MyString

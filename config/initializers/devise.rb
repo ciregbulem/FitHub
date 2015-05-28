@@ -235,7 +235,8 @@ Devise.setup do |config|
   # Facebook Config
   config.omniauth :facebook, ENV['facebook_app_id'], ENV['facebook_app_secret'], scope: 'email,public_profile,user_friends', display: 'page', info_fields: 'email,first_name,last_name,location,gender,birthday,link', :image_size => {width: '300', height: '300'}, :client_options => {:site => 'https://graph.facebook.com/v2.0',
       :authorize_url => "https://www.facebook.com/v2.0/dialog/oauth"}
-                  
+      
+  # Fitbit Config             
   config.omniauth :fitbit, ENV['fitbit_app_key'], ENV['fitbit_app_secret']
   
   # ==> Warden configuration
@@ -260,4 +261,7 @@ Devise.setup do |config|
   # When using omniauth, Devise cannot automatically set Omniauth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
+
+  config.secret_key = '4ce4388e432eae55151d06b23525dde186e964d615ed9a58daf701df07022d960c22b5fd2a9ae1cb4bfdf1691afbaf97406039605c56d71897fbfafa8853d0df'
+  
 end

@@ -19,3 +19,7 @@
 /config/application.yml
 
 config/.fitgem.yml
+
+app/.DS_Store
+
+app/views/.DS_Store
