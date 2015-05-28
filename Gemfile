@@ -1,9 +1,9 @@
 
 source 'https://rubygems.org'
 
-#gem 'nokogiri'
-#gem 'rack', '~>1.1'
-#gem 'rspec'
+gem 'nokogiri'
+gem 'rack', '~>1.1'
+gem 'rspec'
 gem 'bootstrap_form'
 gem 'will_paginate', '~> 3.0.6'
 gem 'will_paginate-bootstrap'
