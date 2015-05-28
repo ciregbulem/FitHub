@@ -81,5 +81,3 @@ test:
 production:
   <<: *default
   database: fithub_production
-  username:
-  password: 
