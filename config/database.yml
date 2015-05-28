@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: fithub_production
-  username: fithub
-  password: <%= ENV['FITHUB_DATABASE_PASSWORD'] %>
+  username:
+  password: 
