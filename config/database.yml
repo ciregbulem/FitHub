@@ -80,5 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: database
-
+  database: dkdunsmp8r7e0
+  username: biefgmoldqdrqo
+  password: <%= ENV['FITHUB_DATABASE_PASSWORD'] %>

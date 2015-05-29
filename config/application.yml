@@ -28,3 +28,4 @@ production:
   fitbit_app_secret: "3d2cade2888f4272ba44da35cfb610b3"
   fitbit_app_key_test: "df79b1480da14daaace174cb04362bd0"
   fitbit_app_secret_test: "46b5b34e7338475fa65fdbeb1e137e1a"
+  FITHUB_DATABASE_PASSWORD: "5-hTgDdz_WhPzEP6aZC7bg5voK"
