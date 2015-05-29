@@ -77,7 +77,8 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
     
   # For Devise:
-    config.action_mailer.default_url_options = { host: 'http://chudiblog.herokuapp.com'}
+    config.action_mailer.default_url_options = { host: 'http://fithubapp.herokuapp.com'}
+    config.assets.initialize_on_precompile =  false
 
    # For Paperclip:
   Paperclip.options[:command_path] = "/usr/local/bin/"
